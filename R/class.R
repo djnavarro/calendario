@@ -5,6 +5,8 @@ calendario <- R6::R6Class(
 
     get_tasks = function() {private$tasks},
 
+    set_project = function(project) {private$project <- project},
+
     add_task = function(description = NULL, # string describing the work (defaults to "work")
                         start = NULL,       # date the work starts (defaults to current date)
                         stop = NULL,        # date the work stops (defaults to start)
@@ -13,7 +15,7 @@ calendario <- R6::R6Class(
                         project = NULL,     # project name (defaults to "project")
                         team = NULL) {      # team (defaults to "danielle")
 
-      if(is.null(project)) project <- "project"
+      if(is.null(project)) project <- private$project
       if(is.null(type)) type <- "work"
       if(is.null(description)) description <- "work"
       if(is.null(start)) start <- lubridate::today()
@@ -76,6 +78,7 @@ calendario <- R6::R6Class(
   ),
 
   private = list(
+
     tasks = tibble::tibble(
       project = character(),
       type = character(),
@@ -84,6 +87,8 @@ calendario <- R6::R6Class(
       stop = as.Date(character(0L)),
       hours = numeric(),
       team = character()
-    ) 
+    ),
+    
+    project = "project"
   )
 )
