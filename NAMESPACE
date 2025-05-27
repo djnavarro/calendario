@@ -2,3 +2,5 @@
 
 S3method(print,calendario)
 export(calendario)
+export(project)
+export(task)

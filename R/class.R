@@ -138,3 +138,15 @@ print.calendario <- function(x, ...) {
   cli::cli_text("<calendario object>")
   cli::cli_ul(items)
 }
+
+#' @export
+project <- function(x, project) {
+  x$set_project(project)
+  x
+}
+
+#' @export
+task <- function(x, ...) {
+  x$add_task(...)
+  x
+}

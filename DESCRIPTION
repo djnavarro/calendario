@@ -1,6 +1,6 @@
 Package: calendario
 Title: Minimal Task Tracker 
-Version: 0.0.0.9003
+Version: 0.0.0.9004
 Authors@R: 
     person("Danielle", "Navarro", , "djnavarro@protonmail.com", role = c("aut", "cre"))
 Description: Minimal tool for tracking tasks and displaying time utilisation.
