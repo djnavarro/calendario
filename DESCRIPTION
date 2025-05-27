@@ -1,6 +1,6 @@
 Package: calendario
 Title: Minimal Task Tracker 
-Version: 0.0.0.9005
+Version: 0.0.0.9006
 Authors@R: 
     person("Danielle", "Navarro", , "djnavarro@protonmail.com", role = c("aut", "cre"))
 Description: Minimal tool for tracking tasks and displaying time utilisation.
@@ -17,6 +17,7 @@ Imports:
     cli,
     dplyr,
     flextable,
+    lubridate,
     purrr,
     R6,
     tibble,

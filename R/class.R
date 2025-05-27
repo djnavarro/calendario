@@ -154,16 +154,18 @@ task <- function(x, ...) {
   x
 }
 
-# TODO: this is awful, fix it
-parse_lazy_date <- function(when, threshold = 9) {
-  month <- gsub("[0123456789 ]", "", when)
-  year <- "2024"
-  if (grep(month, tolower(month.abb)) < threshold) {
-    year <- "2025"
-  }
-  str <- paste(when, year)
-  lubridate::dmy(str)
+# lazy dates are "10 may", "1 jun", etc; assumed to be the same 
+# year as today, unless that would lead to a date that is in the
+# past. there is a "tolerance" allowed before an apparently past 
+# date is rolled forward to next year, set to 14 days by default
+parse_lazy_date <- function(x, tol = 14) {
+  year <- lubridate::year(lubridate::today())
+  date <- lubridate::dmy(paste(x, year))
+  diff <- as.numeric(date - lubridate::today())
+  if (diff > -tol) return(date)
+  lubridate::dmy(paste(x, year + 1))
 }
+
 
 #friday <- function() {
 #  weekday <- lubridate::wday(lubridate::today(), week_start = 6)
