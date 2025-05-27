@@ -621,22 +621,22 @@ to anyone else.</p>
 <span id="cb2-4"><a href="#cb2-4" tabindex="-1"></a><span class="co"># verbose way to do it that I never do</span></span>
 <span id="cb2-5"><a href="#cb2-5" tabindex="-1"></a>cal<span class="sc">$</span><span class="fu">add_task</span>(</span>
 <span id="cb2-6"><a href="#cb2-6" tabindex="-1"></a>  <span class="at">description =</span> <span class="st">&quot;it&#39;s a thing&quot;</span>,</span>
-<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">start =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-10-11&quot;</span>),</span>
-<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">stop =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-10-14&quot;</span>),</span>
+<span id="cb2-7"><a href="#cb2-7" tabindex="-1"></a>  <span class="at">start =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-05-11&quot;</span>),</span>
+<span id="cb2-8"><a href="#cb2-8" tabindex="-1"></a>  <span class="at">stop =</span> <span class="fu">as.Date</span>(<span class="st">&quot;2025-05-14&quot;</span>),</span>
 <span id="cb2-9"><a href="#cb2-9" tabindex="-1"></a>  <span class="at">project =</span> <span class="st">&quot;be gay&quot;</span>,</span>
 <span id="cb2-10"><a href="#cb2-10" tabindex="-1"></a>  <span class="at">team  =</span> <span class="st">&quot;danielle&quot;</span></span>
 <span id="cb2-11"><a href="#cb2-11" tabindex="-1"></a>)</span>
 <span id="cb2-12"><a href="#cb2-12" tabindex="-1"></a></span>
 <span id="cb2-13"><a href="#cb2-13" tabindex="-1"></a><span class="co"># more convenient</span></span>
 <span id="cb2-14"><a href="#cb2-14" tabindex="-1"></a>cal<span class="sc">$</span><span class="fu">set_project</span>(<span class="st">&quot;do crime&quot;</span>)</span>
-<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>cal<span class="sc">$</span><span class="fu">add_task</span>(<span class="st">&quot;crime 1&quot;</span>, <span class="st">&quot;12 oct&quot;</span>)</span>
-<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>cal<span class="sc">$</span><span class="fu">add_task</span>(<span class="st">&quot;crime 2&quot;</span>, <span class="st">&quot;12 oct&quot;</span>, <span class="st">&quot;14 oct&quot;</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" tabindex="-1"></a>cal<span class="sc">$</span><span class="fu">add_task</span>(<span class="st">&quot;crime 1&quot;</span>, <span class="st">&quot;12 may&quot;</span>)</span>
+<span id="cb2-16"><a href="#cb2-16" tabindex="-1"></a>cal<span class="sc">$</span><span class="fu">add_task</span>(<span class="st">&quot;crime 2&quot;</span>, <span class="st">&quot;12 may&quot;</span>, <span class="st">&quot;14 may&quot;</span>)</span>
 <span id="cb2-17"><a href="#cb2-17" tabindex="-1"></a></span>
 <span id="cb2-18"><a href="#cb2-18" tabindex="-1"></a><span class="co"># most common workflow</span></span>
 <span id="cb2-19"><a href="#cb2-19" tabindex="-1"></a>cal <span class="sc">|&gt;</span></span>
 <span id="cb2-20"><a href="#cb2-20" tabindex="-1"></a>  <span class="fu">project</span>(<span class="st">&quot;be happy&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="fu">task</span>(<span class="st">&quot;thing 1&quot;</span>) <span class="sc">|&gt;</span></span>
-<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  <span class="fu">task</span>(<span class="st">&quot;thing 2&quot;</span>)</span>
+<span id="cb2-21"><a href="#cb2-21" tabindex="-1"></a>  <span class="fu">task</span>(<span class="st">&quot;thing 1&quot;</span>, <span class="st">&quot;2 jun&quot;</span>) <span class="sc">|&gt;</span></span>
+<span id="cb2-22"><a href="#cb2-22" tabindex="-1"></a>  <span class="fu">task</span>(<span class="st">&quot;thing 2&quot;</span>, <span class="st">&quot;13 jun&quot;</span>)</span>
 <span id="cb2-23"><a href="#cb2-23" tabindex="-1"></a><span class="co">#&gt; &lt;calendario object&gt;</span></span>
 <span id="cb2-24"><a href="#cb2-24" tabindex="-1"></a><span class="co">#&gt; • be gay [1 task]</span></span>
 <span id="cb2-25"><a href="#cb2-25" tabindex="-1"></a><span class="co">#&gt; • be happy [2 tasks]</span></span>
@@ -654,11 +654,40 @@ to anyone else.</p>
 <span id="cb2-37"><a href="#cb2-37" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 7</span></span>
 <span id="cb2-38"><a href="#cb2-38" tabindex="-1"></a><span class="co">#&gt;   project  type  description  start      stop       hours team    </span></span>
 <span id="cb2-39"><a href="#cb2-39" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;        &lt;date&gt;     &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;   </span></span>
-<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; 1 be gay   work  it&#39;s a thing 2025-10-11 2025-10-14     2 danielle</span></span>
-<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; 2 do crime work  crime 1      2024-10-12 2024-10-12     2 danielle</span></span>
-<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; 3 do crime work  crime 2      2024-10-12 2024-10-14     2 danielle</span></span>
-<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#&gt; 4 be happy work  thing 1      2025-05-27 2025-05-27     2 danielle</span></span>
-<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co">#&gt; 5 be happy work  thing 2      2025-05-27 2025-05-27     2 danielle</span></span></code></pre></div>
+<span id="cb2-40"><a href="#cb2-40" tabindex="-1"></a><span class="co">#&gt; 1 be gay   work  it&#39;s a thing 2025-05-11 2025-05-14     2 danielle</span></span>
+<span id="cb2-41"><a href="#cb2-41" tabindex="-1"></a><span class="co">#&gt; 2 do crime work  crime 1      2025-05-12 2025-05-12     2 danielle</span></span>
+<span id="cb2-42"><a href="#cb2-42" tabindex="-1"></a><span class="co">#&gt; 3 do crime work  crime 2      2025-05-12 2025-05-14     2 danielle</span></span>
+<span id="cb2-43"><a href="#cb2-43" tabindex="-1"></a><span class="co">#&gt; 4 be happy work  thing 1      2025-06-02 2025-06-02     2 danielle</span></span>
+<span id="cb2-44"><a href="#cb2-44" tabindex="-1"></a><span class="co">#&gt; 5 be happy work  thing 2      2025-06-13 2025-06-13     2 danielle</span></span>
+<span id="cb2-45"><a href="#cb2-45" tabindex="-1"></a></span>
+<span id="cb2-46"><a href="#cb2-46" tabindex="-1"></a><span class="co"># extracting a calendar returns a list of tibbles</span></span>
+<span id="cb2-47"><a href="#cb2-47" tabindex="-1"></a>cal<span class="sc">$</span><span class="fu">get_calendar</span>(<span class="st">&quot;1 may&quot;</span>, <span class="st">&quot;11 jul&quot;</span>)</span>
+<span id="cb2-48"><a href="#cb2-48" tabindex="-1"></a><span class="co">#&gt; [[1]]</span></span>
+<span id="cb2-49"><a href="#cb2-49" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 6</span></span>
+<span id="cb2-50"><a href="#cb2-50" tabindex="-1"></a><span class="co">#&gt;   Week        Mon   Tue   Wed   Thu   Fri</span></span>
+<span id="cb2-51"><a href="#cb2-51" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb2-52"><a href="#cb2-52" tabindex="-1"></a><span class="co">#&gt; 1 May 1-2      NA    NA    NA     0     0</span></span>
+<span id="cb2-53"><a href="#cb2-53" tabindex="-1"></a><span class="co">#&gt; 2 May 5-9       0     0     0     0     0</span></span>
+<span id="cb2-54"><a href="#cb2-54" tabindex="-1"></a><span class="co">#&gt; 3 May 12-16     6     4     4     0     0</span></span>
+<span id="cb2-55"><a href="#cb2-55" tabindex="-1"></a><span class="co">#&gt; 4 May 19-23     0     0     0     0     0</span></span>
+<span id="cb2-56"><a href="#cb2-56" tabindex="-1"></a><span class="co">#&gt; 5 May 26-30     0     0     0     0     0</span></span>
+<span id="cb2-57"><a href="#cb2-57" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-58"><a href="#cb2-58" tabindex="-1"></a><span class="co">#&gt; [[2]]</span></span>
+<span id="cb2-59"><a href="#cb2-59" tabindex="-1"></a><span class="co">#&gt; # A tibble: 5 × 6</span></span>
+<span id="cb2-60"><a href="#cb2-60" tabindex="-1"></a><span class="co">#&gt;   Week        Mon   Tue   Wed   Thu   Fri</span></span>
+<span id="cb2-61"><a href="#cb2-61" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;     &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb2-62"><a href="#cb2-62" tabindex="-1"></a><span class="co">#&gt; 1 Jun 2-6       2     0     0     0     0</span></span>
+<span id="cb2-63"><a href="#cb2-63" tabindex="-1"></a><span class="co">#&gt; 2 Jun 9-13      0     0     0     0     2</span></span>
+<span id="cb2-64"><a href="#cb2-64" tabindex="-1"></a><span class="co">#&gt; 3 Jun 16-20     0     0     0     0     0</span></span>
+<span id="cb2-65"><a href="#cb2-65" tabindex="-1"></a><span class="co">#&gt; 4 Jun 23-27     0     0     0     0     0</span></span>
+<span id="cb2-66"><a href="#cb2-66" tabindex="-1"></a><span class="co">#&gt; 5 Jun 1-30      0    NA    NA    NA    NA</span></span>
+<span id="cb2-67"><a href="#cb2-67" tabindex="-1"></a><span class="co">#&gt; </span></span>
+<span id="cb2-68"><a href="#cb2-68" tabindex="-1"></a><span class="co">#&gt; [[3]]</span></span>
+<span id="cb2-69"><a href="#cb2-69" tabindex="-1"></a><span class="co">#&gt; # A tibble: 2 × 6</span></span>
+<span id="cb2-70"><a href="#cb2-70" tabindex="-1"></a><span class="co">#&gt;   Week       Mon   Tue   Wed   Thu   Fri</span></span>
+<span id="cb2-71"><a href="#cb2-71" tabindex="-1"></a><span class="co">#&gt;   &lt;chr&gt;    &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span id="cb2-72"><a href="#cb2-72" tabindex="-1"></a><span class="co">#&gt; 1 Jul 1-30    NA     0     0     0     0</span></span>
+<span id="cb2-73"><a href="#cb2-73" tabindex="-1"></a><span class="co">#&gt; 2 Jul 7-11     0     0     0     0     0</span></span></code></pre></div>
 
 </body>
 </html>

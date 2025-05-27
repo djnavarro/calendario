@@ -40,26 +40,29 @@ cal <- calendario$new()
 # verbose way to do it that I never do
 cal$add_task(
   description = "it's a thing",
-  start = as.Date("2025-10-11"),
-  stop = as.Date("2025-10-14"),
+  start = as.Date("2025-05-11"),
+  stop = as.Date("2025-05-14"),
   project = "be gay",
   team  = "danielle"
 )
 
 # more convenient
 cal$set_project("do crime")
-cal$add_task("crime 1", "12 oct")
-cal$add_task("crime 2", "12 oct", "14 oct")
+cal$add_task("crime 1", "12 may")
+cal$add_task("crime 2", "12 may", "14 may")
 
 # most common workflow
 cal |>
   project("be happy") |>
-  task("thing 1") |>
-  task("thing 2")
+  task("thing 1", "2 jun") |>
+  task("thing 2", "13 jun")
 
 # printing gives minimal summary
 cal 
 
 # extracting tasks returns a tibble
 cal$get_tasks()
+
+# extracting a calendar returns a list of tibbles
+cal$get_calendar("1 may", "11 jul")
 ```

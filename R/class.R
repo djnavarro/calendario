@@ -60,6 +60,9 @@ calendario <- R6::R6Class(
     get_workload = function(start = lubridate::today(), 
                             stop = start + 90) {
 
+      if(!inherits(start, "Date")) start <- parse_lazy_date(start)
+      if(!inherits(stop, "Date")) stop <- parse_lazy_date(stop)
+                          
       base <- tibble::tibble(date = as.Date(start:stop), hours = 0)
     
       private$tasks |>
@@ -150,3 +153,19 @@ task <- function(x, ...) {
   x$add_task(...)
   x
 }
+
+# TODO: this is awful, fix it
+parse_lazy_date <- function(when, threshold = 9) {
+  month <- gsub("[0123456789 ]", "", when)
+  year <- "2024"
+  if (grep(month, tolower(month.abb)) < threshold) {
+    year <- "2025"
+  }
+  str <- paste(when, year)
+  lubridate::dmy(str)
+}
+
+#friday <- function() {
+#  weekday <- lubridate::wday(lubridate::today(), week_start = 6)
+#  lubridate::today() + 7 - weekday
+#}
