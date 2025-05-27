@@ -33,4 +33,25 @@ pak::pak("djnavarro/calendario")
 
 ## Example
 
-Yeah yeah, I'll add something. Maybe. 
+```{r}
+library(calendario)
+tasks <- calendario$new()
+
+# verbose way to do it that I never do
+tasks$add_task(
+  description = "it's a thing",
+  start = as.Date("2025-10-11"),
+  stop = as.Date("2025-10-14"),
+  project = "be gay",
+  team  = "danielle"
+)
+
+# more convenient
+tasks$set_project("do crime")
+tasks$add_task("crime 1", "12 oct")
+tasks$add_task("crime 2", "12 oct", "14 oct")
+
+# print
+tasks
+tasks$get_tasks()
+```

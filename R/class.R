@@ -128,3 +128,13 @@ calendario <- R6::R6Class(
     project = "project"
   )
 )
+
+#' @exportS3Method
+print.calendario <- function(x, ...) {
+  counts <- table(x$get_tasks()$project)
+  project_name <- names(counts)
+  project_info <- paste0("[", counts, " task", ifelse(counts == 1, "]", "s]"))
+  items <- paste(project_name, project_info)
+  cli::cli_text("<calendario object>")
+  cli::cli_ul(items)
+}
