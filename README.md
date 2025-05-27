@@ -70,6 +70,14 @@ cal$get_tasks()
 #> 4 be happy work  thing 1      2025-07-02 2025-07-02     2 danielle
 #> 5 be happy work  thing 2      2025-07-13 2025-07-13     2 danielle
 
+# showing tasks returns a flextable
+cal$show_tasks()
+```
+
+<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+
+``` r
+
 # extracting a calendar returns a list of tibbles
 cal$get_calendar("1 jun", "11 aug")
 #> [[1]]
@@ -99,4 +107,9 @@ cal$get_calendar("1 jun", "11 aug")
 #> 1 Aug 1-31     NA    NA    NA    NA     0
 #> 2 Aug 4-8       0     0     0     0     0
 #> 3 Aug 11-11     0    NA    NA    NA    NA
+
+# showing a calendar returns a flextable
+cal$show_calendar("1 jun", "11 aug")
 ```
+
+<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />

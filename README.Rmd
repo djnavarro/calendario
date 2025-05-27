@@ -63,6 +63,12 @@ cal
 # extracting tasks returns a tibble
 cal$get_tasks()
 
+# showing tasks returns a flextable
+cal$show_tasks()
+
 # extracting a calendar returns a list of tibbles
 cal$get_calendar("1 jun", "11 aug")
+
+# showing a calendar returns a flextable
+cal$show_calendar("1 jun", "11 aug")
 ```
