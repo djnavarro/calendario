@@ -38,6 +38,25 @@ calendario <- R6::R6Class(
         )
     }, 
 
+    show_tasks = function(...) {
+
+      data <- private$tasks |> 
+        dplyr::filter(...)
+
+      if(nrow(data) == 0) {
+        cat(":)\n")
+        return(invisible(NULL))
+      }
+      data |>
+        dplyr::arrange(start) |>
+        dplyr::mutate(
+          start = format(start, "%A %B %d %Y"),
+          stop = format(stop, "%A %B %d %Y")
+        ) |>
+        flextable::flextable() |> 
+        flextable::autofit()
+    },
+    
     get_workload = function(start = lubridate::today(), 
                             stop = start + 90) {
 
@@ -58,21 +77,38 @@ calendario <- R6::R6Class(
         dplyr::filter(!(wday %in% c("Sat", "Sun")))
     },
 
-    get_calendar = function() {
+    get_calendar = function(start = lubridate::today(), 
+                            stop = start + 90,
+                            split = TRUE) {
 
-      work <- self$get_workload()
-      work |>
-        #dplyr::filter(month == m) |>
+      work <- self$get_workload(start = start, stop = stop)
+
+      cal <- work |>
         dplyr::group_by(wnum) |>
         dplyr::mutate(wstr = paste(range(mday), collapse="-")) |>
         dplyr::ungroup() |>
         dplyr::select(wday, month, hours, wstr) |>
         tidyr::pivot_wider(names_from = wday, values_from = hours) |> 
         tidyr::unite(month, wstr, col = "Week", sep = " ", remove = FALSE) |> 
-        dplyr::select(Week, Mon, Tue, Wed, Thu, Fri, month) |> 
-        dplyr::group_by(month) |> 
-        dplyr::group_split() |> 
-        purrr::map(\(x) x |> dplyr::select(-month))
+        dplyr::select(Week, Mon, Tue, Wed, Thu, Fri, Month = month)
+      
+      if(split) {
+        cal <- cal |> 
+          dplyr::group_by(Month) |> 
+          dplyr::group_split() |> 
+          purrr::map(\(x) x |> dplyr::select(-Month))
+      }
+
+      cal
+    },
+
+    show_calendar = function(start = lubridate::today(), stop = start + 90) {
+      
+      cal <- self$get_calendar(start = start, stop = stop, split = FALSE)
+      cal |> 
+        flextable::as_grouped_data("Month") |> 
+        flextable::flextable() |> 
+        flextable::autofit()
     
     }
   ),
