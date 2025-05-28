@@ -157,8 +157,8 @@ task <- function(x, ...) {
 # lazy dates are "10 may", "1 jun", etc; assumed to be the same 
 # year as today, unless that would lead to a date that is in the
 # past. there is a "tolerance" allowed before an apparently past 
-# date is rolled forward to next year, set to 14 days by default
-parse_lazy_date <- function(x, tol = 14) {
+# date is rolled forward to next year, set to 56 days by default
+parse_lazy_date <- function(x, tol = 56) {
   year <- lubridate::year(lubridate::today())
   date <- lubridate::dmy(paste(x, year))
   diff <- as.numeric(date - lubridate::today())
