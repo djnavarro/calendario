@@ -147,8 +147,12 @@ calendario <- R6::R6Class(
 print.calendario <- function(x, ...) {
   counts <- table(x$get_tasks()$project)
   project_name <- names(counts)
-  project_info <- paste0("[", counts, " task", ifelse(counts == 1, "]", "s]"))
-  items <- paste(project_name, project_info)
+  if (length(project_name) == 0) {
+    items <- "no projects or tasks"
+  } else {
+    project_info <- paste0("[", counts, " task", ifelse(counts == 1, "]", "s]"))
+    items <- paste(project_name, project_info)
+  }
   cli::cli_text("<calendario object>")
   cli::cli_ul(items)
 }
