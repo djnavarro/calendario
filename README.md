@@ -52,10 +52,6 @@ cal |>
   cal_project("be happy") |>
   cal_task("thing 1", "2 jul") |>
   cal_task("thing 2", "13 jul")
-#> <calendario object>
-#> • be gay [1 task]
-#> • be happy [2 tasks]
-#> • do crime [2 tasks]
 
 # printing gives minimal summary
 cal 
