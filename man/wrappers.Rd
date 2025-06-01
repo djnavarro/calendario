@@ -28,8 +28,9 @@ cal_get_calendar(x, ...)
 Invisibly returns the calendario object
 }
 \description{
-\code{cal_task()} and \code{cal_project()} are convenience functions that
-allow a piped workflow with calendario objects
+\code{cal_add_task()}, \code{cal_set_project()}, and the other functions here
+are convenience functions that allow a piped workflow with calendario
+objects
 }
 \details{
 These functions are wrappers around one of the calendario object

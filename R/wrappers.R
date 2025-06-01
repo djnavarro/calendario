@@ -3,8 +3,9 @@
 #' Wrapper functions for calendario methods
 #' 
 #' @description
-#' `cal_task()` and `cal_project()` are convenience functions that 
-#' allow a piped workflow with calendario objects
+#' `cal_add_task()`, `cal_set_project()`, and the other functions here 
+#' are convenience functions that allow a piped workflow with calendario 
+#' objects
 #'
 #' @details
 #' These functions are wrappers around one of the calendario object
