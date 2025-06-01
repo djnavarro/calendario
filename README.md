@@ -49,9 +49,9 @@ cal$add_task("crime 2", "12 jul", "14 jul")
 
 # piping is also supported
 cal |>
-  cal_project("be happy") |>
-  cal_task("thing 1", "2 jul") |>
-  cal_task("thing 2", "13 jul")
+  cal_set_project("be happy") |>
+  cal_add_task("thing 1", "2 jul") |>
+  cal_add_task("thing 2", "13 jul")
 
 # printing gives minimal summary
 cal 

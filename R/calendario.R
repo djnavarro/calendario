@@ -157,14 +157,40 @@ print.calendario <- function(x, ...) {
   cli::cli_ul(items)
 }
 
-#' @export
-cal_project <- function(x, project) {
-  x$set_project(project)
-  invisible(x)
-}
+#' @title
+#' Convenience functions
+#' 
+#' @description
+#' `cal_task()` and `cal_project()` are convenience functions that 
+#' allow a piped workflow with calendario objects
+#'
+#' @details
+#' These functions are wrappers around one of the calendario object
+#' methods: `cal_add_task()` is a wrapper around `$add_task()`, 
+#' `cal_set_project()` is a wrapper around `$set_project()` and so
+#' on. In all cases the functions take a calendario object `x` as 
+#' their first argument, and all other arguments are passed via `...` 
+#' to the relevant calendario R6 method.
+#' 
+#' @param x A calendario object
+#' @param ... Arguments to be passed to the relevant R6 method
+#' 
+#' @name wrappers
+NULL
+
 
 #' @export
-cal_task <- function(x, ...) {
+#' @rdname wrappers
+cal_add_task <- function(x, ...) {
   x$add_task(...)
   invisible(x)
 }
+
+
+#' @export
+#' @rdname wrappers
+cal_set_project <- function(x, ...) {
+  x$set_project(...)
+  invisible(x)
+}
+
