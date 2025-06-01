@@ -61,6 +61,7 @@
 <div class="section level2">
 <h2 id="example">Example<a class="anchor" aria-label="anchor" href="#example"></a>
 </h2>
+<p>Creating a calendar and adding tasks to projects:</p>
 <div class="sourceCode" id="cb2"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html" class="external-link">library</a></span><span class="op">(</span><span class="va"><a href="https://calendario.djnavarro.net">calendario</a></span><span class="op">)</span></span>
 <span></span>
@@ -77,26 +78,32 @@
 <span>  project <span class="op">=</span> <span class="st">"be gay"</span>,</span>
 <span>  team  <span class="op">=</span> <span class="st">"danielle"</span></span>
 <span><span class="op">)</span></span>
+<span><span class="va">cal</span></span>
+<span><span class="co">#&gt; &lt;Calendario object [1 project]&gt;</span></span>
+<span><span class="co">#&gt; • be gay [1 task]</span></span>
 <span></span>
 <span><span class="co"># this is a more convenient way</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">set_project</span><span class="op">(</span><span class="st">"do crime"</span><span class="op">)</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">add_task</span><span class="op">(</span><span class="st">"crime 1"</span>, <span class="st">"12 jul"</span><span class="op">)</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">add_task</span><span class="op">(</span><span class="st">"crime 2"</span>, <span class="st">"12 jul"</span>, <span class="st">"14 jul"</span><span class="op">)</span></span>
+<span><span class="va">cal</span></span>
+<span><span class="co">#&gt; &lt;Calendario object [2 projects]&gt;</span></span>
+<span><span class="co">#&gt; • be gay [1 task]</span></span>
+<span><span class="co">#&gt; • do crime [2 tasks]</span></span>
 <span></span>
 <span><span class="co"># piping is also supported</span></span>
 <span><span class="va">cal</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/wrappers.html">cal_set_project</a></span><span class="op">(</span><span class="st">"be happy"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/wrappers.html">cal_add_task</a></span><span class="op">(</span><span class="st">"thing 1"</span>, <span class="st">"2 jul"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
 <span>  <span class="fu"><a href="reference/wrappers.html">cal_add_task</a></span><span class="op">(</span><span class="st">"thing 2"</span>, <span class="st">"13 jul"</span><span class="op">)</span></span>
-<span></span>
-<span><span class="co"># printing gives minimal summary</span></span>
 <span><span class="va">cal</span> </span>
 <span><span class="co">#&gt; &lt;Calendario object [3 projects]&gt;</span></span>
 <span><span class="co">#&gt; • be gay [1 task]</span></span>
 <span><span class="co">#&gt; • be happy [2 tasks]</span></span>
-<span><span class="co">#&gt; • do crime [2 tasks]</span></span>
-<span></span>
-<span><span class="co"># extracting tasks returns a tibble</span></span>
+<span><span class="co">#&gt; • do crime [2 tasks]</span></span></code></pre></div>
+<p>Viewing tasks, projects, and monthly calendars:</p>
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<code class="sourceCode R"><span><span class="co"># extracting tasks returns a tibble</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">get_tasks</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 7</span></span>
 <span><span class="co">#&gt;   project  type  description  start      stop       hours team    </span></span>
@@ -109,8 +116,8 @@
 <span></span>
 <span><span class="co"># showing tasks returns a flextable</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">show_tasks</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-2-1.png" width="100%"></p>
-<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
+<p><img src="reference/figures/README-unnamed-chunk-3-1.png" width="100%"></p>
+<div class="sourceCode" id="cb4"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span></span>
 <span><span class="co"># extracting a calendar returns a list of tibbles</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">get_calendar</span><span class="op">(</span><span class="st">"1 jun"</span>, <span class="st">"11 aug"</span><span class="op">)</span></span>
@@ -144,7 +151,7 @@
 <span></span>
 <span><span class="co"># showing a calendar returns a flextable</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">show_calendar</span><span class="op">(</span><span class="st">"1 jun"</span>, <span class="st">"11 aug"</span><span class="op">)</span></span></code></pre></div>
-<p><img src="reference/figures/README-unnamed-chunk-2-2.png" width="100%"></p>
+<p><img src="reference/figures/README-unnamed-chunk-3-2.png" width="100%"></p>
 </div>
 </div>
   </main><aside class="col-md-3"><div class="links">
