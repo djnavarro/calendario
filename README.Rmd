@@ -37,7 +37,7 @@ pak::pak("djnavarro/calendario")
 library(calendario)
 
 # initialise an empty calendar
-cal <- calendario$new()
+cal <- Calendario$new()
 cal
 
 # this is the verbose way to add a task

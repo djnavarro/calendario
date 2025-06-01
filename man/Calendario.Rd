@@ -96,7 +96,7 @@ cal <- Calendario$new()
 cal$set_project("my project")
 cal$add_task("first task", "jan 21")
 cal$add_task("second task", "jan 23")
-cal$show_workload(start = "jan 1", stop = "feb 16")
+cal$show_calendar(start = "jan 1", stop = "feb 16")
     
 }
 \section{Methods}{
@@ -381,7 +381,7 @@ A flextable object
 cal$set_project("my project")
 cal$add_task("first task", "jan 21")
 cal$add_task("second task", "jan 23")
-cal$show_workload(start = "jan 1", stop = "feb 16")
+cal$show_calendar(start = "jan 1", stop = "feb 16")
     
 }
 \if{html}{\out{</div>}}

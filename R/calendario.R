@@ -242,7 +242,7 @@ Calendario <- R6::R6Class(
     #' cal$set_project("my project")
     #' cal$add_task("first task", "jan 21")
     #' cal$add_task("second task", "jan 23")
-    #' cal$show_workload(start = "jan 1", stop = "feb 16")
+    #' cal$show_calendar(start = "jan 1", stop = "feb 16")
     #'     
     show_calendar = function(start = lubridate::today(), stop = start + 90) {
       
@@ -273,15 +273,23 @@ Calendario <- R6::R6Class(
 )
 
 #' @exportS3Method
-print.calendario <- function(x, ...) {
-  counts <- table(x$get_tasks()$project)
-  project_name <- names(counts)
-  if (length(project_name) == 0) {
-    items <- "no projects or tasks"
+print.Calendario <- function(x, ...) {
+  n_task <- table(x$get_tasks()$project)
+  project_name <- names(n_task)
+  n_proj <- length(project_name)
+  if (n_proj == 0) {
+    cli::cli_text("<Calendario object [0 projects]>")
+  
+  } else if (n_proj == 1) {
+    project_info <- paste0("[", n_task, " task", ifelse(n_task == 1, "]", "s]"))
+    cli::cli_text("<Calendario object [1 project]>")
+    cli::cli_ul(paste(project_name, project_info))
+
   } else {
-    project_info <- paste0("[", counts, " task", ifelse(counts == 1, "]", "s]"))
-    items <- paste(project_name, project_info)
+    project_info <- paste0("[", n_task, " task", ifelse(n_task == 1, "]", "s]"))
+    cli::cli_text(paste0("<Calendario object [", n_proj, " projects]>"))
+    cli::cli_ul(paste(project_name, project_info))
+
   }
-  cli::cli_text("<calendario object>")
-  cli::cli_ul(items)
+  return(invisible(x))
 }

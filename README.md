@@ -28,10 +28,9 @@ pak::pak("djnavarro/calendario")
 library(calendario)
 
 # initialise an empty calendar
-cal <- calendario$new()
+cal <- Calendario$new()
 cal
-#> <calendario object>
-#> • no projects or tasks
+#> <Calendario object [0 projects]>
 
 # this is the verbose way to add a task
 cal$add_task(
@@ -55,7 +54,7 @@ cal |>
 
 # printing gives minimal summary
 cal 
-#> <calendario object>
+#> <Calendario object [3 projects]>
 #> • be gay [1 task]
 #> • be happy [2 tasks]
 #> • do crime [2 tasks]
