@@ -1,7 +1,7 @@
 
 #' @title
-#' Wrapper functions for calendario methods
-#' 
+#' Calendario Wrapper Functions 
+#'  
 #' @description
 #' `cal_add_task()`, `cal_set_project()`, and the other functions here 
 #' are convenience functions that allow a piped workflow with calendario 
@@ -13,24 +13,33 @@
 #' `cal_set_project()` is a wrapper around `$set_project()` and so
 #' on. In all cases the functions take a calendario object `x` as 
 #' their first argument, and all other arguments are passed via `...` 
-#' to the relevant calendario R6 method.
+#' to the relevant calendario R6 method. The one exception to this 
+#' rule is `cal_new()`, for which `...` is the only argument.
 #' 
 #' @param x A calendario object
 #' @param ... Arguments to be passed to the relevant R6 method
 #' 
-#' @return Invisibly returns the calendario object
+#' @return The calendario object. For all functions except `cal_new()`
+#' the object is returned invisibly
 #' 
 #' @name wrappers
 #' 
 #' @examples
-#' cal <- Calendario$new()
+#' cal <- cal_new()
 #' cal |>
 #'   cal_set_project("project-name") |>
 #'   cal_add_task("description-1", "29 may") |>
-#'   cal_add_task("description-2", "1 jun") |>
-#'   cal_get_workload()
-#' cal$get_tasks()
+#'   cal_add_task("description-2", "1 jun")
+#' 
+#' cal_get_workload(cal)
+#' cal_get_tasks(cal)
 NULL
+
+#' @rdname wrappers
+#' @export
+cal_new <- function(...) {
+  Calendario$new(...)
+}
 
 #' @rdname wrappers
 #' @export

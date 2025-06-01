@@ -2,13 +2,16 @@
 % Please edit documentation in R/wrappers.R
 \name{wrappers}
 \alias{wrappers}
+\alias{cal_new}
 \alias{cal_set_project}
 \alias{cal_add_task}
 \alias{cal_get_tasks}
 \alias{cal_get_workload}
 \alias{cal_get_calendar}
-\title{Wrapper functions for calendario methods}
+\title{Calendario Wrapper Functions}
 \usage{
+cal_new(...)
+
 cal_set_project(x, ...)
 
 cal_add_task(x, ...)
@@ -20,12 +23,13 @@ cal_get_workload(x, ...)
 cal_get_calendar(x, ...)
 }
 \arguments{
-\item{x}{A calendario object}
-
 \item{...}{Arguments to be passed to the relevant R6 method}
+
+\item{x}{A calendario object}
 }
 \value{
-Invisibly returns the calendario object
+The calendario object. For all functions except \code{cal_new()}
+the object is returned invisibly
 }
 \description{
 \code{cal_add_task()}, \code{cal_set_project()}, and the other functions here
@@ -38,14 +42,16 @@ methods: \code{cal_add_task()} is a wrapper around \verb{$add_task()},
 \code{cal_set_project()} is a wrapper around \verb{$set_project()} and so
 on. In all cases the functions take a calendario object \code{x} as
 their first argument, and all other arguments are passed via \code{...}
-to the relevant calendario R6 method.
+to the relevant calendario R6 method. The one exception to this
+rule is \code{cal_new()}, for which \code{...} is the only argument.
 }
 \examples{
-cal <- Calendario$new()
+cal <- cal_new()
 cal |>
   cal_set_project("project-name") |>
   cal_add_task("description-1", "29 may") |>
-  cal_add_task("description-2", "1 jun") |>
-  cal_get_workload()
-cal$get_tasks()
+  cal_add_task("description-2", "1 jun")
+
+cal_get_workload(cal)
+cal_get_tasks(cal)
 }
