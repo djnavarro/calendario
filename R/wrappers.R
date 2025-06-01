@@ -23,7 +23,7 @@
 #' @name wrappers
 #' 
 #' @examples
-#' cal <- calendario$new()
+#' cal <- Calendario$new()
 #' cal |>
 #'   cal_set_project("project-name") |>
 #'   cal_add_task("description-1", "29 may") |>

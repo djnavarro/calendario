@@ -41,7 +41,7 @@ their first argument, and all other arguments are passed via \code{...}
 to the relevant calendario R6 method.
 }
 \examples{
-cal <- calendario$new()
+cal <- Calendario$new()
 cal |>
   cal_set_project("project-name") |>
   cal_add_task("description-1", "29 may") |>
