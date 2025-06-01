@@ -103,7 +103,6 @@ calendario <- R6::R6Class(
           dplyr::ungroup() |>
           dplyr::select(weekday, month, hours, dayspan) |>
           tidyr::pivot_wider(names_from = weekday, values_from = hours) |> 
-          #tidyr::unite(month, dayspan, col = "Week", sep = " ", remove = FALSE) |> 
           dplyr::select(Month = month, Days = dayspan, Mon, Tue, Wed, Thu, Fri)
       }
 

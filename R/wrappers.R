@@ -31,36 +31,36 @@
 #' cal$get_tasks()
 NULL
 
-#' @export
 #' @rdname wrappers
-cal_add_task <- function(x, ...) {
-  x$add_task(...)
-  invisible(x)
-}
-
 #' @export
-#' @rdname wrappers
-cal_get_tasks <- function(x, ...) {
-  x$get_tasks(...)
-  invisible(x)
-}
-
-#' @export
-#' @rdname wrappers
 cal_set_project <- function(x, ...) {
   x$set_project(...)
   invisible(x)
 }
 
-#' @export
 #' @rdname wrappers
+#' @export
+cal_add_task <- function(x, ...) {
+  x$add_task(...)
+  invisible(x)
+}
+
+#' @rdname wrappers
+#' @export
+cal_get_tasks <- function(x, ...) {
+  x$get_tasks(...)
+  invisible(x)
+}
+
+#' @rdname wrappers
+#' @export
 cal_get_workload <- function(x, ...) {
   x$get_workload(...)
   invisible(x)
 }
 
-#' @export
 #' @rdname wrappers
+#' @export
 cal_get_calendar <- function(x, ...) {
   x$get_calendar(...)
   invisible(x)
