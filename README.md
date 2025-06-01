@@ -81,32 +81,32 @@ cal$show_tasks()
 # extracting a calendar returns a list of tibbles
 cal$get_calendar("1 jun", "11 aug")
 #> [[1]]
-#> # A tibble: 5 × 6
-#>   Week        Mon   Tue   Wed   Thu   Fri
-#>   <chr>     <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Jun 2-6       0     0     0     0     0
-#> 2 Jun 9-13      0     0     0     0     0
-#> 3 Jun 16-20     0     0     0     0     0
-#> 4 Jun 23-27     0     0     0     0     0
-#> 5 Jun 1-30      0    NA    NA    NA    NA
+#> # A tibble: 5 × 7
+#>   Month Days    Mon   Tue   Wed   Thu   Fri
+#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 Jun   2-6       0     0     0     0     0
+#> 2 Jun   9-13      0     0     0     0     0
+#> 3 Jun   16-20     0     0     0     0     0
+#> 4 Jun   23-27     0     0     0     0     0
+#> 5 Jun   30        0    NA    NA    NA    NA
 #> 
 #> [[2]]
-#> # A tibble: 5 × 6
-#>   Week        Mon   Tue   Wed   Thu   Fri
-#>   <chr>     <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Jul 1-30     NA     0     2     0     0
-#> 2 Jul 7-11      0     0     0     0     2
-#> 3 Jul 14-18     4     0     0     0     0
-#> 4 Jul 21-25     0     0     0     0     0
-#> 5 Jul 1-31      0     0     0     0    NA
+#> # A tibble: 5 × 7
+#>   Month Days    Mon   Tue   Wed   Thu   Fri
+#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 Jul   1-4      NA     0     2     0     0
+#> 2 Jul   7-11      0     0     0     0     2
+#> 3 Jul   14-18     4     0     0     0     0
+#> 4 Jul   21-25     0     0     0     0     0
+#> 5 Jul   28-31     0     0     0     0    NA
 #> 
 #> [[3]]
-#> # A tibble: 3 × 6
-#>   Week        Mon   Tue   Wed   Thu   Fri
-#>   <chr>     <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Aug 1-31     NA    NA    NA    NA     0
-#> 2 Aug 4-8       0     0     0     0     0
-#> 3 Aug 11-11     0    NA    NA    NA    NA
+#> # A tibble: 3 × 7
+#>   Month Days    Mon   Tue   Wed   Thu   Fri
+#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 Aug   1        NA    NA    NA    NA     0
+#> 2 Aug   4-8       0     0     0     0     0
+#> 3 Aug   11        0    NA    NA    NA    NA
 
 # showing a calendar returns a flextable
 cal$show_calendar("1 jun", "11 aug")

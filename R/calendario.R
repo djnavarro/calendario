@@ -66,49 +66,60 @@ calendario <- R6::R6Class(
       base <- tibble::tibble(date = date_vec(start, stop), hours = 0)
     
       private$tasks |>
-        purrr::pmap(\(..., start, stop, hours) tibble::tibble(date = date_vec(start, stop), hours = hours)) |>
+        purrr::pmap(
+          \(..., start, stop, hours) {
+            tibble::tibble(date = date_vec(start, stop), hours = hours)
+          }
+        ) |>
         dplyr::bind_rows() |>
         dplyr::bind_rows(base) |>
         dplyr::summarise(hours = sum(hours), .by = date) |>
         dplyr::arrange(date) |>
         dplyr::mutate(
-          wday = lubridate::wday(date, label = TRUE),
-          mday = lubridate::mday(date),
-          wnum = cumsum(wday == "Mon"),
-          month = lubridate::month(date, label = TRUE)
+          weekday  = lubridate::wday(date, label = TRUE),
+          month    = lubridate::month(date, label = TRUE),
+          monthday = lubridate::mday(date),
+          week     = cumsum(weekday == "Mon")
         ) |>
-        dplyr::filter(!(wday %in% c("Sat", "Sun")))
+        dplyr::filter(!(weekday %in% c("Sat", "Sun"))) # TODO: support weekends eventually?
     },
 
     get_calendar = function(start = lubridate::today(), 
-                            stop = start + 90,
-                            split = TRUE) {
+                            stop = start + 90) {
 
       work <- self$get_workload(start = start, stop = stop)
 
-      cal <- work |>
-        dplyr::group_by(wnum) |>
-        dplyr::mutate(wstr = paste(range(mday), collapse="-")) |>
-        dplyr::ungroup() |>
-        dplyr::select(wday, month, hours, wstr) |>
-        tidyr::pivot_wider(names_from = wday, values_from = hours) |> 
-        tidyr::unite(month, wstr, col = "Week", sep = " ", remove = FALSE) |> 
-        dplyr::select(Week, Mon, Tue, Wed, Thu, Fri, Month = month)
-      
-      if(split) {
-        cal <- cal |> 
-          dplyr::group_by(Month) |> 
-          dplyr::group_split() |> 
-          purrr::map(\(x) x |> dplyr::select(-Month))
+      span_str <- function(x) {
+        lo <- min(x)
+        hi <- max(x)
+        if (lo == hi) return(as.character(lo))
+        paste(lo, hi, sep = "-")
       }
 
-      cal
+      work_month <- function(data) {
+        data |>
+          dplyr::group_by(week) |>
+          dplyr::mutate(dayspan = span_str(monthday)) |>
+          dplyr::ungroup() |>
+          dplyr::select(weekday, month, hours, dayspan) |>
+          tidyr::pivot_wider(names_from = weekday, values_from = hours) |> 
+          #tidyr::unite(month, dayspan, col = "Week", sep = " ", remove = FALSE) |> 
+          dplyr::select(Month = month, Days = dayspan, Mon, Tue, Wed, Thu, Fri)
+      }
+
+      mcal <- work |> 
+        dplyr::group_by(month) |> 
+        dplyr::group_split() |> 
+        purrr::map(work_month)
+      
+      mcal
     },
 
     show_calendar = function(start = lubridate::today(), stop = start + 90) {
       
-      cal <- self$get_calendar(start = start, stop = stop, split = FALSE)
-      cal |> 
+      mcal <- self$get_calendar(start = start, stop = stop)
+      mcal |> 
+        dplyr::bind_rows() |>
         flextable::as_grouped_data("Month") |> 
         flextable::flextable() |> 
         flextable::autofit()
