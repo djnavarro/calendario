@@ -1,27 +1,98 @@
+#' R6 Class Representing Tasks and Projects
+#'
+#' @description
+#' A calendario object tracks a collection of projects that are contain 
+#' tasks that are to be performed at different times 
+#'
+#' @details
+#' BLAH BLAH BLAH
+#' 
 #' @export
-calendario <- R6::R6Class(
-  classname = "calendario",
+Calendario <- R6::R6Class(
+  classname = "Calendario",
   public = list(
 
-    get_tasks = function() {private$tasks},
+    #' @description
+    #' Retrieve a table of stored tasks
+    #' 
+    #' @param ... Arguments passed to dplyr::filter()
+    #' 
+    #' @return A tibble with one row per task
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$set_project("my project")
+    #' cal$add_task("first task", "jan 21")
+    #' cal$add_task("second task", "jan 22")
+    #' cal$get_tasks()
+    #' 
+    get_tasks = function(...) { 
+      dplyr::filter(private$tasks, ...)
+    },
 
+    #' @description
+    #' Set the current project
+    #' 
+    #' @param project Name of the current project
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$set_project("my project")
+    #' cal$get_project()
+    #' 
     set_project = function(project) {private$project <- project},
 
-    add_task = function(description = NULL, # string describing the work (defaults to "work")
-                        start = NULL,       # date the work starts (defaults to current date)
-                        stop = NULL,        # date the work stops (defaults to start)
-                        hours = NULL,       # average hours per day (defaults to 2 hours/day)
-                        type = NULL,        # a category label (defaults to "work")
-                        project = NULL,     # project name (defaults to "project")
-                        team = NULL) {      # team (defaults to "danielle")
+    #' @description
+    #' Retrieve the name of the current project
+    #' 
+    #' @return A character vector of length 1
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$set_project("my project")
+    #' cal$get_project()
+    #
+    get_project = function() {private$project},
 
-      if(is.null(project)) project <- private$project
-      if(is.null(type)) type <- "work"
+    #' @description
+    #' Add a task to a project
+    #' 
+    #' @param description Character string providing a description of the task
+    #' @param start Date the work starts (defaults to current date)
+    #' @param stop Date the work stops (defaults to same day as start)
+    #' @param hours Number of hours per day the task takes
+    #' @param type Character string assigning the task to a category
+    #' @param project Character string naming the project the task falls within
+    #' @param team Character string describing the team
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$add_task(
+    #'   description = "label for the task",
+    #'   start = as.Date("2025-01-24"),
+    #'   stop = as.Date("2025-01-26"),
+    #'   hours = 1,
+    #'   project = "my project",
+    #'   team = "just me"
+    #' )
+    #' cal$get_tasks()
+    #
+    add_task = function(description = NULL,
+                        start = NULL,
+                        stop = NULL,
+                        hours = NULL,
+                        type = NULL,
+                        project = NULL,
+                        team = NULL) {
+
+      # supply defaults
       if(is.null(description)) description <- "work"
       if(is.null(start)) start <- lubridate::today()
       if(is.null(stop)) stop <- start
-      if(is.null(team)) team <- "danielle"
       if(is.null(hours)) hours <- 2
+      if(is.null(type)) type <- "work"
+      if(is.null(project)) project <- private$project
+      if(is.null(team)) team <- "danielle"
 
       if(!inherits(start, "Date")) start <- parse_lazy_date(start)
       if(!inherits(stop, "Date")) stop <- parse_lazy_date(stop)
@@ -38,6 +109,20 @@ calendario <- R6::R6Class(
         )
     }, 
 
+    #' @description
+    #' Show a table of stored tasks as a flextable
+    #' 
+    #' @param ... Arguments passed to dplyr::filter()
+    #' 
+    #' @return A flextable object
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$set_project("my project")
+    #' cal$add_task("first task", "jan 21")
+    #' cal$add_task("second task", "jan 23")
+    #' cal$show_tasks()
+    #' 
     show_tasks = function(...) {
 
       data <- private$tasks |> 
@@ -56,7 +141,22 @@ calendario <- R6::R6Class(
         flextable::flextable() |> 
         flextable::autofit()
     },
-    
+
+    #' @description
+    #' Retrieve a table describing daily workload
+    #' 
+    #' @param start Date the tabulation starts (defaults to current date)
+    #' @param stop Date the tabulation stops (defaults to start date plus 90 days)
+    #' 
+    #' @return A tibble with one row per day
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$set_project("my project")
+    #' cal$add_task("first task", "jan 21")
+    #' cal$add_task("second task", "jan 23")
+    #' cal$get_workload()
+    #' 
     get_workload = function(start = lubridate::today(), 
                             stop = start + 90) {
 
@@ -84,6 +184,21 @@ calendario <- R6::R6Class(
         dplyr::filter(!(weekday %in% c("Sat", "Sun"))) # TODO: support weekends eventually?
     },
 
+    #' @description
+    #' Retrieve a list of tables describing monthly workload
+    #' 
+    #' @param start Date the tabulation starts (defaults to current date)
+    #' @param stop Date the tabulation stops (defaults to start date plus 90 days)
+    #' 
+    #' @return A tibble with one row per month
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$set_project("my project")
+    #' cal$add_task("first task", "jan 21")
+    #' cal$add_task("second task", "jan 23")
+    #' cal$get_workload(start = "jan 1", stop = "feb 16")
+    #'     
     get_calendar = function(start = lubridate::today(), 
                             stop = start + 90) {
 
@@ -114,6 +229,21 @@ calendario <- R6::R6Class(
       mcal
     },
 
+    #' @description
+    #' Show monthly workload as a flextable
+    #' 
+    #' @param start Date the tabulation starts (defaults to current date)
+    #' @param stop Date the tabulation stops (defaults to start date plus 90 days)
+    #' 
+    #' @return A flextable object
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$set_project("my project")
+    #' cal$add_task("first task", "jan 21")
+    #' cal$add_task("second task", "jan 23")
+    #' cal$show_workload(start = "jan 1", stop = "feb 16")
+    #'     
     show_calendar = function(start = lubridate::today(), stop = start + 90) {
       
       mcal <- self$get_calendar(start = start, stop = stop)
