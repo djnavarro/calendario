@@ -26,9 +26,14 @@ pak::pak("djnavarro/calendario")
 
 ``` r
 library(calendario)
-cal <- calendario$new()
 
-# verbose way to do it that I never do
+# initialise an empty calendar
+cal <- calendario$new()
+cal
+#> <calendario object>
+#> • no projects or tasks
+
+# this is the verbose way to add a task
 cal$add_task(
   description = "it's a thing",
   start = as.Date("2025-07-11"),
@@ -37,16 +42,16 @@ cal$add_task(
   team  = "danielle"
 )
 
-# more convenient
+# this is a more convenient way
 cal$set_project("do crime")
 cal$add_task("crime 1", "12 jul")
 cal$add_task("crime 2", "12 jul", "14 jul")
 
-# most common workflow
+# piping is also supported
 cal |>
-  project("be happy") |>
-  task("thing 1", "2 jul") |>
-  task("thing 2", "13 jul")
+  cal_project("be happy") |>
+  cal_task("thing 1", "2 jul") |>
+  cal_task("thing 2", "13 jul")
 #> <calendario object>
 #> • be gay [1 task]
 #> • be happy [2 tasks]

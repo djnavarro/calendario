@@ -158,13 +158,13 @@ print.calendario <- function(x, ...) {
 }
 
 #' @export
-project <- function(x, project) {
+cal_project <- function(x, project) {
   x$set_project(project)
   x
 }
 
 #' @export
-task <- function(x, ...) {
+cal_task <- function(x, ...) {
   x$add_task(...)
   x
 }
