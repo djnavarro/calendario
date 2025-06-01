@@ -63,10 +63,10 @@ calendario <- R6::R6Class(
       if(!inherits(start, "Date")) start <- parse_lazy_date(start)
       if(!inherits(stop, "Date")) stop <- parse_lazy_date(stop)
                           
-      base <- tibble::tibble(date = as.Date(start:stop), hours = 0)
+      base <- tibble::tibble(date = date_vec(start, stop), hours = 0)
     
       private$tasks |>
-        purrr::pmap(\(..., start, stop, hours) tibble::tibble(date = as.Date(start:stop), hours = hours)) |>
+        purrr::pmap(\(..., start, stop, hours) tibble::tibble(date = date_vec(start, stop), hours = hours)) |>
         dplyr::bind_rows() |>
         dplyr::bind_rows(base) |>
         dplyr::summarise(hours = sum(hours), .by = date) |>
@@ -153,21 +153,3 @@ task <- function(x, ...) {
   x$add_task(...)
   x
 }
-
-# lazy dates are "10 may", "1 jun", etc; assumed to be the same 
-# year as today, unless that would lead to a date that is in the
-# past. there is a "tolerance" allowed before an apparently past 
-# date is rolled forward to next year, set to 56 days by default
-parse_lazy_date <- function(x, tol = 56) {
-  year <- lubridate::year(lubridate::today())
-  date <- lubridate::dmy(paste(x, year))
-  diff <- as.numeric(date - lubridate::today())
-  if (diff > -tol) return(date)
-  lubridate::dmy(paste(x, year + 1))
-}
-
-
-#friday <- function() {
-#  weekday <- lubridate::wday(lubridate::today(), week_start = 6)
-#  lubridate::today() + 7 - weekday
-#}
