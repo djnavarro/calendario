@@ -160,11 +160,11 @@ print.calendario <- function(x, ...) {
 #' @export
 cal_project <- function(x, project) {
   x$set_project(project)
-  x
+  invisible(x)
 }
 
 #' @export
 cal_task <- function(x, ...) {
   x$add_task(...)
-  x
+  invisible(x)
 }
