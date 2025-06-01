@@ -2,5 +2,8 @@
 
 S3method(print,calendario)
 export(cal_add_task)
+export(cal_get_calendar)
+export(cal_get_tasks)
+export(cal_get_workload)
 export(cal_set_project)
 export(calendario)
