@@ -24,6 +24,8 @@ pak::pak("djnavarro/calendario")
 
 ## Example
 
+Creating a calendar and adding tasks to projects:
+
 ``` r
 library(calendario)
 
@@ -40,25 +42,34 @@ cal$add_task(
   project = "be gay",
   team  = "danielle"
 )
+cal
+#> <Calendario object [1 project]>
+#> • be gay [1 task]
 
 # this is a more convenient way
 cal$set_project("do crime")
 cal$add_task("crime 1", "12 jul")
 cal$add_task("crime 2", "12 jul", "14 jul")
+cal
+#> <Calendario object [2 projects]>
+#> • be gay [1 task]
+#> • do crime [2 tasks]
 
 # piping is also supported
 cal |>
   cal_set_project("be happy") |>
   cal_add_task("thing 1", "2 jul") |>
   cal_add_task("thing 2", "13 jul")
-
-# printing gives minimal summary
 cal 
 #> <Calendario object [3 projects]>
 #> • be gay [1 task]
 #> • be happy [2 tasks]
 #> • do crime [2 tasks]
+```
 
+Viewing tasks, projects, and monthly calendars:
+
+``` r
 # extracting tasks returns a tibble
 cal$get_tasks()
 #> # A tibble: 5 × 7
@@ -74,7 +85,7 @@ cal$get_tasks()
 cal$show_tasks()
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-1.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-1.png" width="100%" />
 
 ``` r
 
@@ -112,4 +123,4 @@ cal$get_calendar("1 jun", "11 aug")
 cal$show_calendar("1 jun", "11 aug")
 ```
 
-<img src="man/figures/README-unnamed-chunk-2-2.png" width="100%" />
+<img src="man/figures/README-unnamed-chunk-3-2.png" width="100%" />
