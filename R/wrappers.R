@@ -50,8 +50,15 @@ cal_set_project <- function(x, ...) {
 
 #' @rdname wrappers
 #' @export
-cal_set_default <- function(x, ...) {
-  x$set_default(...)
+cal_set_defaults <- function(x, ...) {
+  x$set_defaults(...)
+  invisible(x)
+}
+
+#' @rdname wrappers
+#' @export
+cal_get_defaults <- function(x, ...) {
+  x$get_defaults(...)
   invisible(x)
 }
 

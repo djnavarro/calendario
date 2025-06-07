@@ -4,7 +4,8 @@
 \alias{wrappers}
 \alias{cal_new}
 \alias{cal_set_project}
-\alias{cal_set_default}
+\alias{cal_set_defaults}
+\alias{cal_get_defaults}
 \alias{cal_add_task}
 \alias{cal_get_tasks}
 \alias{cal_get_workload}
@@ -15,7 +16,9 @@ cal_new(...)
 
 cal_set_project(x, ...)
 
-cal_set_default(x, ...)
+cal_set_defaults(x, ...)
+
+cal_get_defaults(x, ...)
 
 cal_add_task(x, ...)
 
