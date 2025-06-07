@@ -33,12 +33,28 @@ cal$get_project()
 
 
 ## ------------------------------------------------
+## Method `Calendario$set_defaults`
+## ------------------------------------------------
+
+cal <- Calendario$new()
+cal$set_defaults(type = "fun", team = "danielle")
+cal$get_defaults()
+
+
+## ------------------------------------------------
 ## Method `Calendario$get_project`
 ## ------------------------------------------------
 
 cal <- Calendario$new()
 cal$set_project("my project")
 cal$get_project()
+
+## ------------------------------------------------
+## Method `Calendario$get_defaults`
+## ------------------------------------------------
+
+cal <- Calendario$new()
+cal$get_defaults()
 
 ## ------------------------------------------------
 ## Method `Calendario$add_task`
@@ -104,7 +120,9 @@ cal$show_calendar(start = "jan 1", stop = "feb 16")
 \itemize{
 \item \href{#method-Calendario-get_tasks}{\code{Calendario$get_tasks()}}
 \item \href{#method-Calendario-set_project}{\code{Calendario$set_project()}}
+\item \href{#method-Calendario-set_defaults}{\code{Calendario$set_defaults()}}
 \item \href{#method-Calendario-get_project}{\code{Calendario$get_project()}}
+\item \href{#method-Calendario-get_defaults}{\code{Calendario$get_defaults()}}
 \item \href{#method-Calendario-add_task}{\code{Calendario$add_task()}}
 \item \href{#method-Calendario-show_tasks}{\code{Calendario$show_tasks()}}
 \item \href{#method-Calendario-get_workload}{\code{Calendario$get_workload()}}
@@ -150,15 +168,15 @@ cal$get_tasks()
 \if{html}{\out{<a id="method-Calendario-set_project"></a>}}
 \if{latex}{\out{\hypertarget{method-Calendario-set_project}{}}}
 \subsection{Method \code{set_project()}}{
-Set the current project
+Set the default project (special case of \code{set_default()})
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Calendario$set_project(project)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Calendario$set_project(value)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
 \if{html}{\out{<div class="arguments">}}
 \describe{
-\item{\code{project}}{Name of the current project}
+\item{\code{value}}{Name of the new default project}
 }
 \if{html}{\out{</div>}}
 }
@@ -175,10 +193,38 @@ cal$get_project()
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Calendario-set_defaults"></a>}}
+\if{latex}{\out{\hypertarget{method-Calendario-set_defaults}{}}}
+\subsection{Method \code{set_defaults()}}{
+Set the default value for one or more specified task fields
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Calendario$set_defaults(...)}\if{html}{\out{</div>}}
+}
+
+\subsection{Arguments}{
+\if{html}{\out{<div class="arguments">}}
+\describe{
+\item{\code{...}}{Name-value pairs specifying task fields and new default values}
+}
+\if{html}{\out{</div>}}
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{cal <- Calendario$new()
+cal$set_defaults(type = "fun", team = "danielle")
+cal$get_defaults()
+
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Calendario-get_project"></a>}}
 \if{latex}{\out{\hypertarget{method-Calendario-get_project}{}}}
 \subsection{Method \code{get_project()}}{
-Retrieve the name of the current project
+Retrieve the name of the current default project
 \subsection{Usage}{
 \if{html}{\out{<div class="r">}}\preformatted{Calendario$get_project()}\if{html}{\out{</div>}}
 }
@@ -191,6 +237,28 @@ A character vector of length 1
 \preformatted{cal <- Calendario$new()
 cal$set_project("my project")
 cal$get_project()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Calendario-get_defaults"></a>}}
+\if{latex}{\out{\hypertarget{method-Calendario-get_defaults}{}}}
+\subsection{Method \code{get_defaults()}}{
+Retrieve the current defaults for all task fields
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Calendario$get_defaults()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A tibble with one row
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{cal <- Calendario$new()
+cal$get_defaults()
 }
 \if{html}{\out{</div>}}
 
