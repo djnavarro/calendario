@@ -50,6 +50,13 @@ cal_set_project <- function(x, ...) {
 
 #' @rdname wrappers
 #' @export
+cal_set_default <- function(x, ...) {
+  x$set_default(...)
+  invisible(x)
+}
+
+#' @rdname wrappers
+#' @export
 cal_add_task <- function(x, ...) {
   x$add_task(...)
   invisible(x)

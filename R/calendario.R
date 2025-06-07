@@ -31,19 +31,35 @@ Calendario <- R6::R6Class(
     },
 
     #' @description
-    #' Set the current project
+    #' Set the default project (special case of `set_default()`)
     #' 
-    #' @param project Name of the current project
+    #' @param value Name of the new default project
     #' 
     #' @examples
     #' cal <- Calendario$new()
     #' cal$set_project("my project")
     #' cal$get_project()
     #' 
-    set_project = function(project) {private$project <- project},
+    set_project = function(value) {private$default$project <- value},
 
     #' @description
-    #' Retrieve the name of the current project
+    #' Set the default value for one or more specified task fields
+    #' 
+    #' @param ... Name-value pairs specifying task fields and new default values
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$set_defaults(type = "fun", team = "danielle")
+    #' cal$get_defaults()
+    #' 
+    set_defaults = function(...) {
+      pairs <- rlang::list2(...)
+      names <- names(pairs)
+      purrr::walk2(names, pairs, \(n, v) private$default[[n]] <- v)
+    },
+
+    #' @description
+    #' Retrieve the name of the current default project
     #' 
     #' @return A character vector of length 1
     #' 
@@ -52,7 +68,18 @@ Calendario <- R6::R6Class(
     #' cal$set_project("my project")
     #' cal$get_project()
     #
-    get_project = function() {private$project},
+    get_project = function() {private$default$project},
+
+    #' @description
+    #' Retrieve the current defaults for all task fields
+    #' 
+    #' @return A tibble with one row
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$get_defaults()
+    #
+    get_defaults = function() {private$default},
 
     #' @description
     #' Add a task to a project
@@ -86,13 +113,13 @@ Calendario <- R6::R6Class(
                         team = NULL) {
 
       # supply defaults
-      if(is.null(description)) description <- "work"
+      if(is.null(description)) description <- private$default$description
       if(is.null(start)) start <- lubridate::today()
       if(is.null(stop)) stop <- start
-      if(is.null(hours)) hours <- 2
-      if(is.null(type)) type <- "work"
-      if(is.null(project)) project <- private$project
-      if(is.null(team)) team <- "danielle"
+      if(is.null(hours)) hours <- private$default$hours
+      if(is.null(type)) type <- private$default$type
+      if(is.null(project)) project <- private$default$project
+      if(is.null(team)) team <- private$default$team
 
       if(!inherits(start, "Date")) start <- parse_lazy_date(start)
       if(!inherits(stop, "Date")) stop <- parse_lazy_date(stop)
@@ -268,7 +295,15 @@ Calendario <- R6::R6Class(
       team = character()
     ),
     
-    project = "project"
+    default = tibble::tibble(
+      project = "project",
+      type = "type",
+      description = "description",
+      start = as.Date(NA),
+      stop = as.Date(NA),
+      hours = 1,
+      team = "team"
+    )
   )
 )
 
