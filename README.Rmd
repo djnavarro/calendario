@@ -44,25 +44,26 @@ cal
 
 # this is the verbose way to add a task
 cal$add_task(
-  description = "it's a thing",
+  description = "Miscellaneous domestic tasks",
   start = as.Date("2025-07-11"),
   stop = as.Date("2025-07-14"),
-  project = "be gay",
-  team  = "danielle"
+  project = "Housework",
+  hours = 4,
+  team  = "Danielle"
 )
 cal
 
 # this is a more convenient way
-cal$set_project("do crime")
-cal$add_task("crime 1", "12 jul")
-cal$add_task("crime 2", "12 jul", "14 jul")
+cal$set_project("Art")
+cal$add_task("Finish writing the system", "12 jul")
+cal$add_task("Publish the code", "12 jul", "14 jul")
 cal
 
 # piping is also supported
 cal |>
-  cal_set_project("be happy") |>
-  cal_add_task("thing 1", "2 jul") |>
-  cal_add_task("thing 2", "13 jul")
+  cal_set_project("Writing") |>
+  cal_add_task("First blog post", "2 jul") |>
+  cal_add_task("Second blog post", "13 jul")
 cal 
 ```
 

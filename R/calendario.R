@@ -82,6 +82,18 @@ Calendario <- R6::R6Class(
     get_defaults = function() {private$default},
 
     #' @description
+    #' Retrieve the options list
+    #' 
+    #' @return A list
+    #' 
+    #' @examples
+    #' cal <- Calendario$new()
+    #' cal$get_options()
+    #
+    get_options = function() {private$options},
+
+
+    #' @description
     #' Add a task to a project
     #' 
     #' @param description Character string providing a description of the task
@@ -114,13 +126,14 @@ Calendario <- R6::R6Class(
 
       # supply defaults
       if(is.null(description)) description <- private$default$description
-      if(is.null(start)) start <- lubridate::today()
-      if(is.null(stop)) stop <- start
+      if(is.null(start)) start <- private$options$date_task_start()
+      if(is.null(stop)) stop <- private$options$date_task_stop()
       if(is.null(hours)) hours <- private$default$hours
       if(is.null(type)) type <- private$default$type
       if(is.null(project)) project <- private$default$project
       if(is.null(team)) team <- private$default$team
 
+      # handle lazy date strings
       if(!inherits(start, "Date")) start <- parse_lazy_date(start)
       if(!inherits(stop, "Date")) stop <- parse_lazy_date(stop)
 
@@ -159,15 +172,30 @@ Calendario <- R6::R6Class(
         cat(":)\n")
         return(invisible(NULL))
       }
+  
+      flextable::set_flextable_defaults(
+        theme_fun = private$options$table_theme,
+        font.size = private$options$table_font_size,
+        background.color = private$options$table_background
+      )
+
       data |>
         dplyr::arrange(start) |>
         dplyr::mutate(
-          start = format(start, "%A %B %d %Y"),
-          stop = format(stop, "%A %B %d %Y")
+          start = format(start, private$options$table_date_format),
+          stop = format(stop, private$options$table_date_format)
         ) |>
         flextable::flextable() |> 
-        flextable::autofit() |> 
-        flextable::bg(bg = "#cccccc", part = "all")
+        flextable::set_header_labels(
+          project = "Project", 
+          type = "Type", 
+          description = "Description", 
+          start = "Start date",
+          stop = "End date",
+          hours = "Daily hours",
+          team = "Team"  
+        ) |> 
+        flextable::autofit()
     },
 
     #' @description
@@ -185,9 +213,10 @@ Calendario <- R6::R6Class(
     #' cal$add_task("second task", "jan 23")
     #' cal$get_workload()
     #' 
-    get_workload = function(start = lubridate::today(), 
-                            stop = start + 90) {
-
+    get_workload = function(start = NULL, stop = NULL) {
+                              
+      if (is.null(start)) start <- private$options$date_range_start()      
+      if (is.null(stop)) stop <- private$options$date_range_stop()                    
       if(!inherits(start, "Date")) start <- parse_lazy_date(start)
       if(!inherits(stop, "Date")) stop <- parse_lazy_date(stop)
                           
@@ -227,9 +256,11 @@ Calendario <- R6::R6Class(
     #' cal$add_task("second task", "jan 23")
     #' cal$get_workload(start = "jan 1", stop = "feb 16")
     #'     
-    get_calendar = function(start = lubridate::today(), 
-                            stop = start + 90) {
+    get_calendar = function(start = NULL, stop = NULL) {
 
+      if (is.null(start)) start <- private$options$date_range_start()      
+      if (is.null(stop)) stop <- private$options$date_range_stop()
+      
       work <- self$get_workload(start = start, stop = stop)
 
       span_str <- function(x) {
@@ -242,11 +273,18 @@ Calendario <- R6::R6Class(
       work_month <- function(data) {
         data |>
           dplyr::group_by(week) |>
-          dplyr::mutate(dayspan = span_str(monthday)) |>
+          dplyr::mutate(
+            dayspan = span_str(monthday),
+            weektotal = sum(hours), 
+          ) |>
           dplyr::ungroup() |>
-          dplyr::select(weekday, month, hours, dayspan) |>
+          dplyr::select(weekday, month, hours, dayspan, weektotal) |>
           tidyr::pivot_wider(names_from = weekday, values_from = hours) |> 
-          dplyr::select(Month = month, Days = dayspan, Mon, Tue, Wed, Thu, Fri)
+          dplyr::select(
+            Month = month, Days = dayspan, 
+            Mon, Tue, Wed, Thu, Fri, 
+            Total = weektotal
+          )
       }
 
       mcal <- work |> 
@@ -272,15 +310,25 @@ Calendario <- R6::R6Class(
     #' cal$add_task("second task", "jan 23")
     #' cal$show_calendar(start = "jan 1", stop = "feb 16")
     #'     
-    show_calendar = function(start = lubridate::today(), stop = start + 90) {
-      
+    show_calendar = function(start = NULL, stop = NULL) {
+
+      if (is.null(start)) start <- private$options$date_range_start()      
+      if (is.null(stop)) stop <- private$options$date_range_stop()
+  
+      flextable::set_flextable_defaults(
+        theme_fun = private$options$table_theme,
+        font.size = private$options$table_font_size,
+        background.color = private$options$table_background
+      )
+
       mcal <- self$get_calendar(start = start, stop = stop)
       mcal |> 
         dplyr::bind_rows() |>
         flextable::as_grouped_data("Month") |> 
-        flextable::flextable() |> 
-        flextable::autofit() |> 
-        flextable::bg(bg = "#cccccc", part = "all")
+        flextable::flextable(
+          theme_fun = private$options$table_theme,
+          cwidth = c(.75, .75, .5, .5, .5, .5, .5, .75)
+        )
     
     }
   ),
@@ -298,14 +346,27 @@ Calendario <- R6::R6Class(
     ),
     
     default = tibble::tibble(
-      project = "project",
-      type = "type",
-      description = "description",
+      project = "Project",
+      type = NA_character_,
+      description = "Description",
       start = as.Date(NA),
       stop = as.Date(NA),
       hours = 1,
-      team = "team"
+      team = NA_character_
+    ),
+
+    options = list(
+      table_date_format = "%a %b %d %Y",
+      table_background = "#ffffff",
+      table_font_size = 8,
+      table_theme = flextable::theme_alafoli,
+      date_range_start = function() lubridate::today(),
+      date_range_stop = function() lubridate::today() + 90,
+      date_task_start = function() lubridate::today(),
+      date_task_stop = function() lubridate::today()
     )
+
+
   )
 )
 

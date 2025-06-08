@@ -36,35 +36,36 @@ cal
 
 # this is the verbose way to add a task
 cal$add_task(
-  description = "it's a thing",
+  description = "Miscellaneous domestic tasks",
   start = as.Date("2025-07-11"),
   stop = as.Date("2025-07-14"),
-  project = "be gay",
-  team  = "danielle"
+  project = "Housework",
+  hours = 4,
+  team  = "Danielle"
 )
 cal
 #> <Calendario object [1 project]>
-#> • be gay [1 task]
+#> • Housework [1 task]
 
 # this is a more convenient way
-cal$set_project("do crime")
-cal$add_task("crime 1", "12 jul")
-cal$add_task("crime 2", "12 jul", "14 jul")
+cal$set_project("Art")
+cal$add_task("Finish writing the system", "12 jul")
+cal$add_task("Publish the code", "12 jul", "14 jul")
 cal
 #> <Calendario object [2 projects]>
-#> • be gay [1 task]
-#> • do crime [2 tasks]
+#> • Art [2 tasks]
+#> • Housework [1 task]
 
 # piping is also supported
 cal |>
-  cal_set_project("be happy") |>
-  cal_add_task("thing 1", "2 jul") |>
-  cal_add_task("thing 2", "13 jul")
+  cal_set_project("Writing") |>
+  cal_add_task("First blog post", "2 jul") |>
+  cal_add_task("Second blog post", "13 jul")
 cal 
 #> <Calendario object [3 projects]>
-#> • be gay [1 task]
-#> • be happy [2 tasks]
-#> • do crime [2 tasks]
+#> • Art [2 tasks]
+#> • Housework [1 task]
+#> • Writing [2 tasks]
 ```
 
 Viewing tasks, projects, and monthly calendars:
@@ -73,13 +74,13 @@ Viewing tasks, projects, and monthly calendars:
 # extracting tasks returns a tibble
 cal$get_tasks()
 #> # A tibble: 5 × 7
-#>   project  type  description  start      stop       hours team   
-#>   <chr>    <chr> <chr>        <date>     <date>     <dbl> <chr>  
-#> 1 be gay   type  it's a thing 2025-07-11 2025-07-14     1 daniel…
-#> 2 do crime type  crime 1      2025-07-12 2025-07-12     1 team   
-#> 3 do crime type  crime 2      2025-07-12 2025-07-14     1 team   
-#> 4 be happy type  thing 1      2025-07-02 2025-07-02     1 team   
-#> 5 be happy type  thing 2      2025-07-13 2025-07-13     1 team
+#>   project   type  description                  start      stop       hours team    
+#>   <chr>     <chr> <chr>                        <date>     <date>     <dbl> <chr>   
+#> 1 Housework <NA>  Miscellaneous domestic tasks 2025-07-11 2025-07-14     4 Danielle
+#> 2 Art       <NA>  Finish writing the system    2025-07-12 2025-06-08     1 <NA>    
+#> 3 Art       <NA>  Publish the code             2025-07-12 2025-07-14     1 <NA>    
+#> 4 Writing   <NA>  First blog post              2025-07-02 2025-06-08     1 <NA>    
+#> 5 Writing   <NA>  Second blog post             2025-07-13 2025-06-08     1 <NA>
 
 # showing tasks returns a flextable
 cal$show_tasks()
@@ -92,32 +93,32 @@ cal$show_tasks()
 # extracting a calendar returns a list of tibbles
 cal$get_calendar("1 jun", "11 aug")
 #> [[1]]
-#> # A tibble: 5 × 7
-#>   Month Days    Mon   Tue   Wed   Thu   Fri
-#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Jun   2-6       0     0     0     0     0
-#> 2 Jun   9-13      0     0     0     0     0
-#> 3 Jun   16-20     0     0     0     0     0
-#> 4 Jun   23-27     0     0     0     0     0
-#> 5 Jun   30        0    NA    NA    NA    NA
+#> # A tibble: 5 × 8
+#>   Month Days    Mon   Tue   Wed   Thu   Fri Total
+#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 Jun   2-6       0     0     0     0     0     0
+#> 2 Jun   9-13      3     3     3     3     3    15
+#> 3 Jun   16-20     3     3     3     3     3    15
+#> 4 Jun   23-27     3     3     3     3     3    15
+#> 5 Jun   30        3    NA    NA    NA    NA     3
 #> 
 #> [[2]]
-#> # A tibble: 5 × 7
-#>   Month Days    Mon   Tue   Wed   Thu   Fri
-#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Jul   1-4      NA     0     1     0     0
-#> 2 Jul   7-11      0     0     0     0     1
-#> 3 Jul   14-18     2     0     0     0     0
-#> 4 Jul   21-25     0     0     0     0     0
-#> 5 Jul   28-31     0     0     0     0    NA
+#> # A tibble: 5 × 8
+#>   Month Days    Mon   Tue   Wed   Thu   Fri Total
+#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 Jul   1-4      NA     3     3     2     2    10
+#> 2 Jul   7-11      2     2     2     2     6    14
+#> 3 Jul   14-18     5     0     0     0     0     5
+#> 4 Jul   21-25     0     0     0     0     0     0
+#> 5 Jul   28-31     0     0     0     0    NA     0
 #> 
 #> [[3]]
-#> # A tibble: 3 × 7
-#>   Month Days    Mon   Tue   Wed   Thu   Fri
-#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Aug   1        NA    NA    NA    NA     0
-#> 2 Aug   4-8       0     0     0     0     0
-#> 3 Aug   11        0    NA    NA    NA    NA
+#> # A tibble: 3 × 8
+#>   Month Days    Mon   Tue   Wed   Thu   Fri Total
+#>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl> <dbl>
+#> 1 Aug   1        NA    NA    NA    NA     0     0
+#> 2 Aug   4-8       0     0     0     0     0     0
+#> 3 Aug   11        0    NA    NA    NA    NA     0
 
 # showing a calendar returns a flextable
 cal$show_calendar("1 jun", "11 aug")

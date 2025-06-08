@@ -57,6 +57,13 @@ cal <- Calendario$new()
 cal$get_defaults()
 
 ## ------------------------------------------------
+## Method `Calendario$get_options`
+## ------------------------------------------------
+
+cal <- Calendario$new()
+cal$get_options()
+
+## ------------------------------------------------
 ## Method `Calendario$add_task`
 ## ------------------------------------------------
 
@@ -123,6 +130,7 @@ cal$show_calendar(start = "jan 1", stop = "feb 16")
 \item \href{#method-Calendario-set_defaults}{\code{Calendario$set_defaults()}}
 \item \href{#method-Calendario-get_project}{\code{Calendario$get_project()}}
 \item \href{#method-Calendario-get_defaults}{\code{Calendario$get_defaults()}}
+\item \href{#method-Calendario-get_options}{\code{Calendario$get_options()}}
 \item \href{#method-Calendario-add_task}{\code{Calendario$add_task()}}
 \item \href{#method-Calendario-show_tasks}{\code{Calendario$show_tasks()}}
 \item \href{#method-Calendario-get_workload}{\code{Calendario$get_workload()}}
@@ -266,6 +274,28 @@ cal$get_defaults()
 
 }
 \if{html}{\out{<hr>}}
+\if{html}{\out{<a id="method-Calendario-get_options"></a>}}
+\if{latex}{\out{\hypertarget{method-Calendario-get_options}{}}}
+\subsection{Method \code{get_options()}}{
+Retrieve the options list
+\subsection{Usage}{
+\if{html}{\out{<div class="r">}}\preformatted{Calendario$get_options()}\if{html}{\out{</div>}}
+}
+
+\subsection{Returns}{
+A list
+}
+\subsection{Examples}{
+\if{html}{\out{<div class="r example copy">}}
+\preformatted{cal <- Calendario$new()
+cal$get_options()
+}
+\if{html}{\out{</div>}}
+
+}
+
+}
+\if{html}{\out{<hr>}}
 \if{html}{\out{<a id="method-Calendario-add_task"></a>}}
 \if{latex}{\out{\hypertarget{method-Calendario-add_task}{}}}
 \subsection{Method \code{add_task()}}{
@@ -358,7 +388,7 @@ cal$show_tasks()
 \subsection{Method \code{get_workload()}}{
 Retrieve a table describing daily workload
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Calendario$get_workload(start = lubridate::today(), stop = start + 90)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Calendario$get_workload(start = NULL, stop = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -393,7 +423,7 @@ cal$get_workload()
 \subsection{Method \code{get_calendar()}}{
 Retrieve a list of tables describing monthly workload
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Calendario$get_calendar(start = lubridate::today(), stop = start + 90)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Calendario$get_calendar(start = NULL, stop = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
@@ -428,7 +458,7 @@ cal$get_workload(start = "jan 1", stop = "feb 16")
 \subsection{Method \code{show_calendar()}}{
 Show monthly workload as a flextable
 \subsection{Usage}{
-\if{html}{\out{<div class="r">}}\preformatted{Calendario$show_calendar(start = lubridate::today(), stop = start + 90)}\if{html}{\out{</div>}}
+\if{html}{\out{<div class="r">}}\preformatted{Calendario$show_calendar(start = NULL, stop = NULL)}\if{html}{\out{</div>}}
 }
 
 \subsection{Arguments}{
