@@ -166,7 +166,8 @@ Calendario <- R6::R6Class(
           stop = format(stop, "%A %B %d %Y")
         ) |>
         flextable::flextable() |> 
-        flextable::autofit()
+        flextable::autofit() |> 
+        flextable::bg(bg = "#cccccc", part = "all")
     },
 
     #' @description
@@ -278,7 +279,8 @@ Calendario <- R6::R6Class(
         dplyr::bind_rows() |>
         flextable::as_grouped_data("Month") |> 
         flextable::flextable() |> 
-        flextable::autofit()
+        flextable::autofit() |> 
+        flextable::bg(bg = "#cccccc", part = "all")
     
     }
   ),

@@ -73,12 +73,12 @@ Viewing tasks, projects, and monthly calendars:
 # extracting tasks returns a tibble
 cal$get_tasks()
 #> # A tibble: 5 × 7
-#>   project  type  description  start      stop       hours team    
-#>   <chr>    <chr> <chr>        <date>     <date>     <dbl> <chr>   
-#> 1 be gay   type  it's a thing 2025-07-11 2025-07-14     1 danielle
-#> 2 do crime type  crime 1      2025-07-12 2025-07-12     1 team    
-#> 3 do crime type  crime 2      2025-07-12 2025-07-14     1 team    
-#> 4 be happy type  thing 1      2025-07-02 2025-07-02     1 team    
+#>   project  type  description  start      stop       hours team   
+#>   <chr>    <chr> <chr>        <date>     <date>     <dbl> <chr>  
+#> 1 be gay   type  it's a thing 2025-07-11 2025-07-14     1 daniel…
+#> 2 do crime type  crime 1      2025-07-12 2025-07-12     1 team   
+#> 3 do crime type  crime 2      2025-07-12 2025-07-14     1 team   
+#> 4 be happy type  thing 1      2025-07-02 2025-07-02     1 team   
 #> 5 be happy type  thing 2      2025-07-13 2025-07-13     1 team
 
 # showing tasks returns a flextable
