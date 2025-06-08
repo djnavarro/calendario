@@ -196,6 +196,10 @@ Calendario <- R6::R6Class(
 
       data |>
         dplyr::arrange(start) |>
+        dplyr::mutate(
+          daily_hours = round(daily_hours, 2), 
+          total_hours = round(total_hours)
+        ) |> 
         flextable::flextable() |> 
         flextable::set_header_labels(
           project = "Project", 
@@ -343,6 +347,7 @@ Calendario <- R6::R6Class(
       mcal <- self$get_calendar(start = start, stop = stop)
       mcal |> 
         dplyr::bind_rows() |>
+        dplyr::mutate(dplyr::across(Mon:Total, round)) |> 
         flextable::as_grouped_data("Month") |> 
         flextable::flextable(
           cwidth = c(.75, .75, .5, .5, .5, .5, .5, .75)
@@ -374,6 +379,7 @@ Calendario <- R6::R6Class(
         theme_fun = flextable::theme_alafoli,
         font.size = 8,
         fmt_date = "%a %b %d %Y",
+        digits = 2,
         background.color = "#ffffff"
       ),
 
