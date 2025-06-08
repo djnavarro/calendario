@@ -30,7 +30,7 @@ Creating a calendar and adding tasks to projects:
 library(calendario)
 
 # initialise an empty calendar
-cal <- Calendario$new()
+cal <- cal_new()
 cal
 #> <Calendario object [0 projects]>
 
@@ -75,11 +75,11 @@ cal$get_tasks()
 #> # A tibble: 5 × 7
 #>   project  type  description  start      stop       hours team    
 #>   <chr>    <chr> <chr>        <date>     <date>     <dbl> <chr>   
-#> 1 be gay   work  it's a thing 2025-07-11 2025-07-14     2 danielle
-#> 2 do crime work  crime 1      2025-07-12 2025-07-12     2 danielle
-#> 3 do crime work  crime 2      2025-07-12 2025-07-14     2 danielle
-#> 4 be happy work  thing 1      2025-07-02 2025-07-02     2 danielle
-#> 5 be happy work  thing 2      2025-07-13 2025-07-13     2 danielle
+#> 1 be gay   type  it's a thing 2025-07-11 2025-07-14     1 danielle
+#> 2 do crime type  crime 1      2025-07-12 2025-07-12     1 team    
+#> 3 do crime type  crime 2      2025-07-12 2025-07-14     1 team    
+#> 4 be happy type  thing 1      2025-07-02 2025-07-02     1 team    
+#> 5 be happy type  thing 2      2025-07-13 2025-07-13     1 team
 
 # showing tasks returns a flextable
 cal$show_tasks()
@@ -105,9 +105,9 @@ cal$get_calendar("1 jun", "11 aug")
 #> # A tibble: 5 × 7
 #>   Month Days    Mon   Tue   Wed   Thu   Fri
 #>   <ord> <chr> <dbl> <dbl> <dbl> <dbl> <dbl>
-#> 1 Jul   1-4      NA     0     2     0     0
-#> 2 Jul   7-11      0     0     0     0     2
-#> 3 Jul   14-18     4     0     0     0     0
+#> 1 Jul   1-4      NA     0     1     0     0
+#> 2 Jul   7-11      0     0     0     0     1
+#> 3 Jul   14-18     2     0     0     0     0
 #> 4 Jul   21-25     0     0     0     0     0
 #> 5 Jul   28-31     0     0     0     0    NA
 #> 

@@ -39,7 +39,7 @@ Creating a calendar and adding tasks to projects:
 library(calendario)
 
 # initialise an empty calendar
-cal <- Calendario$new()
+cal <- cal_new()
 cal
 
 # this is the verbose way to add a task
