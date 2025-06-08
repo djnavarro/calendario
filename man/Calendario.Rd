@@ -72,7 +72,7 @@ cal$add_task(
   description = "label for the task",
   start = as.Date("2025-01-24"),
   stop = as.Date("2025-01-26"),
-  hours = 1,
+  daily_hours = 1,
   project = "my project",
   team = "just me"
 )
@@ -305,7 +305,8 @@ Add a task to a project
   description = NULL,
   start = NULL,
   stop = NULL,
-  hours = NULL,
+  daily_hours = NULL,
+  total_hours = NULL,
   type = NULL,
   project = NULL,
   team = NULL
@@ -321,7 +322,9 @@ Add a task to a project
 
 \item{\code{stop}}{Date the work stops (defaults to same day as start)}
 
-\item{\code{hours}}{Number of hours per day the task takes}
+\item{\code{daily_hours}}{Number of hours per day the task takes}
+
+\item{\code{total_hours}}{Number of hours in total the task takes}
 
 \item{\code{type}}{Character string assigning the task to a category}
 
@@ -338,7 +341,7 @@ cal$add_task(
   description = "label for the task",
   start = as.Date("2025-01-24"),
   stop = as.Date("2025-01-26"),
-  hours = 1,
+  daily_hours = 1,
   project = "my project",
   team = "just me"
 )

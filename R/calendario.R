@@ -99,7 +99,8 @@ Calendario <- R6::R6Class(
     #' @param description Character string providing a description of the task
     #' @param start Date the work starts (defaults to current date)
     #' @param stop Date the work stops (defaults to same day as start)
-    #' @param hours Number of hours per day the task takes
+    #' @param daily_hours Number of hours per day the task takes
+    #' @param total_hours Number of hours in total the task takes
     #' @param type Character string assigning the task to a category
     #' @param project Character string naming the project the task falls within
     #' @param team Character string describing the team
@@ -110,7 +111,7 @@ Calendario <- R6::R6Class(
     #'   description = "label for the task",
     #'   start = as.Date("2025-01-24"),
     #'   stop = as.Date("2025-01-26"),
-    #'   hours = 1,
+    #'   daily_hours = 1,
     #'   project = "my project",
     #'   team = "just me"
     #' )
@@ -119,24 +120,45 @@ Calendario <- R6::R6Class(
     add_task = function(description = NULL,
                         start = NULL,
                         stop = NULL,
-                        hours = NULL,
+                        daily_hours = NULL,
+                        total_hours = NULL,
                         type = NULL,
                         project = NULL,
                         team = NULL) {
 
-      # supply defaults
-      if(is.null(description)) description <- private$default$description
-      if(is.null(start)) start <- private$options$date_task_start()
-      if(is.null(stop)) stop <- private$options$date_task_stop()
-      if(is.null(hours)) hours <- private$default$hours
-      if(is.null(type)) type <- private$default$type
-      if(is.null(project)) project <- private$default$project
-      if(is.null(team)) team <- private$default$team
+      # apply simple defaults
+      if (is.null(description)) description <- private$default$description
+      if (is.null(type)) type <- private$default$type
+      if (is.null(project)) project <- private$default$project
+      if (is.null(team)) team <- private$default$team
 
+      # use helper functions to supply default task dates
+      if (is.null(start)) start <- private$options$date_task_start()
+      if (is.null(stop)) stop <- private$options$date_task_stop(start)
+      
       # handle lazy date strings
-      if(!inherits(start, "Date")) start <- parse_lazy_date(start)
-      if(!inherits(stop, "Date")) stop <- parse_lazy_date(stop)
+      if (!inherits(start, "Date")) start <- parse_lazy_date(start)
+      if (!inherits(stop, "Date")) stop <- parse_lazy_date(stop)  
+      
+      # compute the task date in terms of weekdays
+      days <- n_weekdays(start, stop)
 
+      # fill out daily and total hours
+      if (is.null(daily_hours) & is.null(total_hours)) {
+        daily_hours <- private$default$daily_hours
+        total_hours <- daily_hours * days
+      } 
+      if (is.null(daily_hours) & !is.null(total_hours)) {
+        daily_hours <- total_hours / days
+      }
+      if (!is.null(daily_hours) & is.null(total_hours)) {
+        total_hours <- daily_hours * days
+      }
+      if (!is.null(daily_hours) & !is.null(total_hours)) {
+        total_hours <- daily_hours * days       
+      }
+
+      # store the task
       private$tasks <- private$tasks |>
         tibble::add_row(
           project = project,
@@ -144,7 +166,9 @@ Calendario <- R6::R6Class(
           description = description,
           start = start,
           stop = stop,
-          hours = hours,
+          days = days,
+          daily_hours = daily_hours,
+          total_hours = total_hours,
           team = team
         )
     }, 
@@ -173,18 +197,13 @@ Calendario <- R6::R6Class(
         return(invisible(NULL))
       }
   
-      flextable::set_flextable_defaults(
-        theme_fun = private$options$table_theme,
-        font.size = private$options$table_font_size,
-        background.color = private$options$table_background
+      do.call(
+        what = flextable::set_flextable_defaults,
+        args = private$options$flextable_options
       )
 
       data |>
         dplyr::arrange(start) |>
-        dplyr::mutate(
-          start = format(start, private$options$table_date_format),
-          stop = format(stop, private$options$table_date_format)
-        ) |>
         flextable::flextable() |> 
         flextable::set_header_labels(
           project = "Project", 
@@ -192,7 +211,9 @@ Calendario <- R6::R6Class(
           description = "Description", 
           start = "Start date",
           stop = "End date",
-          hours = "Daily hours",
+          days = "Work days",
+          daily_hours = "Daily hours",
+          total_hours = "Total hours",
           team = "Team"  
         ) |> 
         flextable::autofit()
@@ -216,21 +237,27 @@ Calendario <- R6::R6Class(
     get_workload = function(start = NULL, stop = NULL) {
                               
       if (is.null(start)) start <- private$options$date_range_start()      
-      if (is.null(stop)) stop <- private$options$date_range_stop()                    
+      if (is.null(stop)) stop <- private$options$date_range_stop(start)                    
       if(!inherits(start, "Date")) start <- parse_lazy_date(start)
       if(!inherits(stop, "Date")) stop <- parse_lazy_date(stop)
                           
-      base <- tibble::tibble(date = date_vec(start, stop), hours = 0)
+      base <- tibble::tibble(
+        date = date_vec(start, stop), 
+        daily_hours = 0
+      )
     
       private$tasks |>
         purrr::pmap(
-          \(..., start, stop, hours) {
-            tibble::tibble(date = date_vec(start, stop), hours = hours)
+          \(..., start, stop, daily_hours) {
+            tibble::tibble(
+              date = date_vec(start, stop), 
+              daily_hours = daily_hours
+            )
           }
         ) |>
         dplyr::bind_rows() |>
         dplyr::bind_rows(base) |>
-        dplyr::summarise(hours = sum(hours), .by = date) |>
+        dplyr::summarise(daily_hours = sum(daily_hours), .by = date) |>
         dplyr::arrange(date) |>
         dplyr::mutate(
           weekday  = lubridate::wday(date, label = TRUE),
@@ -259,7 +286,7 @@ Calendario <- R6::R6Class(
     get_calendar = function(start = NULL, stop = NULL) {
 
       if (is.null(start)) start <- private$options$date_range_start()      
-      if (is.null(stop)) stop <- private$options$date_range_stop()
+      if (is.null(stop)) stop <- private$options$date_range_stop(start)
       
       work <- self$get_workload(start = start, stop = stop)
 
@@ -275,13 +302,14 @@ Calendario <- R6::R6Class(
           dplyr::group_by(week) |>
           dplyr::mutate(
             dayspan = span_str(monthday),
-            weektotal = sum(hours), 
+            weektotal = sum(daily_hours), 
           ) |>
           dplyr::ungroup() |>
-          dplyr::select(weekday, month, hours, dayspan, weektotal) |>
-          tidyr::pivot_wider(names_from = weekday, values_from = hours) |> 
+          dplyr::select(weekday, month, daily_hours, dayspan, weektotal) |>
+          tidyr::pivot_wider(names_from = weekday, values_from = daily_hours) |> 
           dplyr::select(
-            Month = month, Days = dayspan, 
+            Month = month, 
+            Days = dayspan, 
             Mon, Tue, Wed, Thu, Fri, 
             Total = weektotal
           )
@@ -313,12 +341,11 @@ Calendario <- R6::R6Class(
     show_calendar = function(start = NULL, stop = NULL) {
 
       if (is.null(start)) start <- private$options$date_range_start()      
-      if (is.null(stop)) stop <- private$options$date_range_stop()
+      if (is.null(stop)) stop <- private$options$date_range_stop(start)
   
-      flextable::set_flextable_defaults(
-        theme_fun = private$options$table_theme,
-        font.size = private$options$table_font_size,
-        background.color = private$options$table_background
+      do.call(
+        what = flextable::set_flextable_defaults,
+        args = private$options$flextable_options
       )
 
       mcal <- self$get_calendar(start = start, stop = stop)
@@ -326,7 +353,6 @@ Calendario <- R6::R6Class(
         dplyr::bind_rows() |>
         flextable::as_grouped_data("Month") |> 
         flextable::flextable(
-          theme_fun = private$options$table_theme,
           cwidth = c(.75, .75, .5, .5, .5, .5, .5, .75)
         )
     
@@ -341,7 +367,9 @@ Calendario <- R6::R6Class(
       description = character(),
       start = as.Date(character(0L)),
       stop = as.Date(character(0L)),
-      hours = numeric(),
+      days = numeric(),
+      daily_hours = numeric(),
+      total_hours = numeric(),
       team = character()
     ),
     
@@ -351,19 +379,30 @@ Calendario <- R6::R6Class(
       description = "Description",
       start = as.Date(NA),
       stop = as.Date(NA),
-      hours = 1,
+      days = NA_real_,
+      daily_hours = 1,
+      total_hours = 1,
       team = NA_character_
     ),
 
     options = list(
-      table_date_format = "%a %b %d %Y",
-      table_background = "#ffffff",
-      table_font_size = 8,
-      table_theme = flextable::theme_alafoli,
+      flextable_options = list(
+        theme_fun = flextable::theme_alafoli,
+        font.size = 8,
+        fmt_date = "%a %b %d %Y",
+        background.color = "#ffffff"
+      ),
       date_range_start = function() lubridate::today(),
-      date_range_stop = function() lubridate::today() + 90,
+      date_range_stop = function(start = NULL, span = 90) {
+        if(is.null(start)) return(lubridate::today() + span)
+        start
+      },
       date_task_start = function() lubridate::today(),
-      date_task_stop = function() lubridate::today()
+      date_task_stop = function(start = NULL) {
+        if(is.null(start)) return(lubridate::today())
+        start
+      }
+
     )
 
 

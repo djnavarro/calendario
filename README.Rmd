@@ -48,15 +48,15 @@ cal$add_task(
   start = as.Date("2025-07-11"),
   stop = as.Date("2025-07-14"),
   project = "Housework",
-  hours = 4,
+  daily_hours = 4,
   team  = "Danielle"
 )
 cal
 
 # this is a more convenient way
 cal$set_project("Art")
-cal$add_task("Finish writing the system", "12 jul")
-cal$add_task("Publish the code", "12 jul", "14 jul")
+cal$add_task("Finish writing the system", "14 jul", total_hours = 4)
+cal$add_task("Publish the code", "14 jul", "16 jul", total_hours = 3)
 cal
 
 # piping is also supported
