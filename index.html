@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">calendario</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9019</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9020</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -72,47 +72,48 @@
 <span></span>
 <span><span class="co"># this is the verbose way to add a task</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">add_task</span><span class="op">(</span></span>
-<span>  description <span class="op">=</span> <span class="st">"it's a thing"</span>,</span>
+<span>  description <span class="op">=</span> <span class="st">"Miscellaneous domestic tasks"</span>,</span>
 <span>  start <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2025-07-11"</span><span class="op">)</span>,</span>
 <span>  stop <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/as.Date.html" class="external-link">as.Date</a></span><span class="op">(</span><span class="st">"2025-07-14"</span><span class="op">)</span>,</span>
-<span>  project <span class="op">=</span> <span class="st">"be gay"</span>,</span>
-<span>  team  <span class="op">=</span> <span class="st">"danielle"</span></span>
+<span>  project <span class="op">=</span> <span class="st">"Housework"</span>,</span>
+<span>  hours <span class="op">=</span> <span class="fl">4</span>,</span>
+<span>  team  <span class="op">=</span> <span class="st">"Danielle"</span></span>
 <span><span class="op">)</span></span>
 <span><span class="va">cal</span></span>
 <span><span class="co">#&gt; &lt;Calendario object [1 project]&gt;</span></span>
-<span><span class="co">#&gt; • be gay [1 task]</span></span>
+<span><span class="co">#&gt; • Housework [1 task]</span></span>
 <span></span>
 <span><span class="co"># this is a more convenient way</span></span>
-<span><span class="va">cal</span><span class="op">$</span><span class="fu">set_project</span><span class="op">(</span><span class="st">"do crime"</span><span class="op">)</span></span>
-<span><span class="va">cal</span><span class="op">$</span><span class="fu">add_task</span><span class="op">(</span><span class="st">"crime 1"</span>, <span class="st">"12 jul"</span><span class="op">)</span></span>
-<span><span class="va">cal</span><span class="op">$</span><span class="fu">add_task</span><span class="op">(</span><span class="st">"crime 2"</span>, <span class="st">"12 jul"</span>, <span class="st">"14 jul"</span><span class="op">)</span></span>
+<span><span class="va">cal</span><span class="op">$</span><span class="fu">set_project</span><span class="op">(</span><span class="st">"Art"</span><span class="op">)</span></span>
+<span><span class="va">cal</span><span class="op">$</span><span class="fu">add_task</span><span class="op">(</span><span class="st">"Finish writing the system"</span>, <span class="st">"12 jul"</span><span class="op">)</span></span>
+<span><span class="va">cal</span><span class="op">$</span><span class="fu">add_task</span><span class="op">(</span><span class="st">"Publish the code"</span>, <span class="st">"12 jul"</span>, <span class="st">"14 jul"</span><span class="op">)</span></span>
 <span><span class="va">cal</span></span>
 <span><span class="co">#&gt; &lt;Calendario object [2 projects]&gt;</span></span>
-<span><span class="co">#&gt; • be gay [1 task]</span></span>
-<span><span class="co">#&gt; • do crime [2 tasks]</span></span>
+<span><span class="co">#&gt; • Art [2 tasks]</span></span>
+<span><span class="co">#&gt; • Housework [1 task]</span></span>
 <span></span>
 <span><span class="co"># piping is also supported</span></span>
 <span><span class="va">cal</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/wrappers.html">cal_set_project</a></span><span class="op">(</span><span class="st">"be happy"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/wrappers.html">cal_add_task</a></span><span class="op">(</span><span class="st">"thing 1"</span>, <span class="st">"2 jul"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
-<span>  <span class="fu"><a href="reference/wrappers.html">cal_add_task</a></span><span class="op">(</span><span class="st">"thing 2"</span>, <span class="st">"13 jul"</span><span class="op">)</span></span>
+<span>  <span class="fu"><a href="reference/wrappers.html">cal_set_project</a></span><span class="op">(</span><span class="st">"Writing"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/wrappers.html">cal_add_task</a></span><span class="op">(</span><span class="st">"First blog post"</span>, <span class="st">"2 jul"</span><span class="op">)</span> <span class="op">|&gt;</span></span>
+<span>  <span class="fu"><a href="reference/wrappers.html">cal_add_task</a></span><span class="op">(</span><span class="st">"Second blog post"</span>, <span class="st">"13 jul"</span><span class="op">)</span></span>
 <span><span class="va">cal</span> </span>
 <span><span class="co">#&gt; &lt;Calendario object [3 projects]&gt;</span></span>
-<span><span class="co">#&gt; • be gay [1 task]</span></span>
-<span><span class="co">#&gt; • be happy [2 tasks]</span></span>
-<span><span class="co">#&gt; • do crime [2 tasks]</span></span></code></pre></div>
+<span><span class="co">#&gt; • Art [2 tasks]</span></span>
+<span><span class="co">#&gt; • Housework [1 task]</span></span>
+<span><span class="co">#&gt; • Writing [2 tasks]</span></span></code></pre></div>
 <p>Viewing tasks, projects, and monthly calendars:</p>
 <div class="sourceCode" id="cb3"><pre class="downlit sourceCode r">
 <code class="sourceCode R"><span><span class="co"># extracting tasks returns a tibble</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">get_tasks</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 7</span></span>
-<span><span class="co">#&gt;   project  type  description  start      stop       hours team   </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;    &lt;chr&gt; &lt;chr&gt;        &lt;date&gt;     &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;  </span></span>
-<span><span class="co">#&gt; 1 be gay   type  it's a thing 2025-07-11 2025-07-14     1 daniel…</span></span>
-<span><span class="co">#&gt; 2 do crime type  crime 1      2025-07-12 2025-07-12     1 team   </span></span>
-<span><span class="co">#&gt; 3 do crime type  crime 2      2025-07-12 2025-07-14     1 team   </span></span>
-<span><span class="co">#&gt; 4 be happy type  thing 1      2025-07-02 2025-07-02     1 team   </span></span>
-<span><span class="co">#&gt; 5 be happy type  thing 2      2025-07-13 2025-07-13     1 team</span></span>
+<span><span class="co">#&gt;   project   type  description                  start      stop       hours team    </span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;                        &lt;date&gt;     &lt;date&gt;     &lt;dbl&gt; &lt;chr&gt;   </span></span>
+<span><span class="co">#&gt; 1 Housework &lt;NA&gt;  Miscellaneous domestic tasks 2025-07-11 2025-07-14     4 Danielle</span></span>
+<span><span class="co">#&gt; 2 Art       &lt;NA&gt;  Finish writing the system    2025-07-12 2025-06-08     1 &lt;NA&gt;    </span></span>
+<span><span class="co">#&gt; 3 Art       &lt;NA&gt;  Publish the code             2025-07-12 2025-07-14     1 &lt;NA&gt;    </span></span>
+<span><span class="co">#&gt; 4 Writing   &lt;NA&gt;  First blog post              2025-07-02 2025-06-08     1 &lt;NA&gt;    </span></span>
+<span><span class="co">#&gt; 5 Writing   &lt;NA&gt;  Second blog post             2025-07-13 2025-06-08     1 &lt;NA&gt;</span></span>
 <span></span>
 <span><span class="co"># showing tasks returns a flextable</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">show_tasks</span><span class="op">(</span><span class="op">)</span></span></code></pre></div>
@@ -122,32 +123,32 @@
 <span><span class="co"># extracting a calendar returns a list of tibbles</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">get_calendar</span><span class="op">(</span><span class="st">"1 jun"</span>, <span class="st">"11 aug"</span><span class="op">)</span></span>
 <span><span class="co">#&gt; [[1]]</span></span>
-<span><span class="co">#&gt; # A tibble: 5 × 7</span></span>
-<span><span class="co">#&gt;   Month Days    Mon   Tue   Wed   Thu   Fri</span></span>
-<span><span class="co">#&gt;   &lt;ord&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Jun   2-6       0     0     0     0     0</span></span>
-<span><span class="co">#&gt; 2 Jun   9-13      0     0     0     0     0</span></span>
-<span><span class="co">#&gt; 3 Jun   16-20     0     0     0     0     0</span></span>
-<span><span class="co">#&gt; 4 Jun   23-27     0     0     0     0     0</span></span>
-<span><span class="co">#&gt; 5 Jun   30        0    NA    NA    NA    NA</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 8</span></span>
+<span><span class="co">#&gt;   Month Days    Mon   Tue   Wed   Thu   Fri Total</span></span>
+<span><span class="co">#&gt;   &lt;ord&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Jun   2-6       0     0     0     0     0     0</span></span>
+<span><span class="co">#&gt; 2 Jun   9-13      3     3     3     3     3    15</span></span>
+<span><span class="co">#&gt; 3 Jun   16-20     3     3     3     3     3    15</span></span>
+<span><span class="co">#&gt; 4 Jun   23-27     3     3     3     3     3    15</span></span>
+<span><span class="co">#&gt; 5 Jun   30        3    NA    NA    NA    NA     3</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[2]]</span></span>
-<span><span class="co">#&gt; # A tibble: 5 × 7</span></span>
-<span><span class="co">#&gt;   Month Days    Mon   Tue   Wed   Thu   Fri</span></span>
-<span><span class="co">#&gt;   &lt;ord&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Jul   1-4      NA     0     1     0     0</span></span>
-<span><span class="co">#&gt; 2 Jul   7-11      0     0     0     0     1</span></span>
-<span><span class="co">#&gt; 3 Jul   14-18     2     0     0     0     0</span></span>
-<span><span class="co">#&gt; 4 Jul   21-25     0     0     0     0     0</span></span>
-<span><span class="co">#&gt; 5 Jul   28-31     0     0     0     0    NA</span></span>
+<span><span class="co">#&gt; # A tibble: 5 × 8</span></span>
+<span><span class="co">#&gt;   Month Days    Mon   Tue   Wed   Thu   Fri Total</span></span>
+<span><span class="co">#&gt;   &lt;ord&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Jul   1-4      NA     3     3     2     2    10</span></span>
+<span><span class="co">#&gt; 2 Jul   7-11      2     2     2     2     6    14</span></span>
+<span><span class="co">#&gt; 3 Jul   14-18     5     0     0     0     0     5</span></span>
+<span><span class="co">#&gt; 4 Jul   21-25     0     0     0     0     0     0</span></span>
+<span><span class="co">#&gt; 5 Jul   28-31     0     0     0     0    NA     0</span></span>
 <span><span class="co">#&gt; </span></span>
 <span><span class="co">#&gt; [[3]]</span></span>
-<span><span class="co">#&gt; # A tibble: 3 × 7</span></span>
-<span><span class="co">#&gt;   Month Days    Mon   Tue   Wed   Thu   Fri</span></span>
-<span><span class="co">#&gt;   &lt;ord&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
-<span><span class="co">#&gt; 1 Aug   1        NA    NA    NA    NA     0</span></span>
-<span><span class="co">#&gt; 2 Aug   4-8       0     0     0     0     0</span></span>
-<span><span class="co">#&gt; 3 Aug   11        0    NA    NA    NA    NA</span></span>
+<span><span class="co">#&gt; # A tibble: 3 × 8</span></span>
+<span><span class="co">#&gt;   Month Days    Mon   Tue   Wed   Thu   Fri Total</span></span>
+<span><span class="co">#&gt;   &lt;ord&gt; &lt;chr&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt; &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Aug   1        NA    NA    NA    NA     0     0</span></span>
+<span><span class="co">#&gt; 2 Aug   4-8       0     0     0     0     0     0</span></span>
+<span><span class="co">#&gt; 3 Aug   11        0    NA    NA    NA    NA     0</span></span>
 <span></span>
 <span><span class="co"># showing a calendar returns a flextable</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">show_calendar</span><span class="op">(</span><span class="st">"1 jun"</span>, <span class="st">"11 aug"</span><span class="op">)</span></span></code></pre></div>
