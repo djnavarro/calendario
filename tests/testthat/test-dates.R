@@ -47,14 +47,14 @@ test_that("parse_lazy_date handles day/month codes", {
           # dm order
           lazy_dates <- paste(day_str[[i]], mon_str[[j]], sep = s)
           expect_equal(
-            object = parse_lazy_date(lazy_dates, tol = Inf, base_year = 2020),
+            object = parse_lazy_date(lazy_dates, year_start = lubridate::ymd("2020 01 01")),
             expected = true_dates
           )
 
           # md order
           lazy_dates <- paste(day_str[[i]], mon_str[[j]], sep = s)
           expect_equal(
-            object = parse_lazy_date(lazy_dates, tol = Inf, base_year = 2020),
+            object = parse_lazy_date(lazy_dates, year_start = lubridate::ymd("2020 01 01")),
             expected = true_dates
           )
 
@@ -85,8 +85,8 @@ test_that("parse_lazy_date rollover works", {
 
   for(tol in range(diffs)) {
 
-    expected_rollover <- diffs <= -tol 
-    parsed_lazy_dates <- parse_lazy_date(lazy_dates, tol = tol, base_year = y)
+    expected_rollover <- diffs < -tol 
+    parsed_lazy_dates <- parse_lazy_date(lazy_dates, year_start = lubridate::today() - tol)
     actual_rollover <- lubridate::year(parsed_lazy_dates) == y + 1
     expect_equal(actual_rollover, expected_rollover)
 
@@ -94,3 +94,28 @@ test_that("parse_lazy_date rollover works", {
 
 })
 
+test_that("parse_lazy_date NA behaviour", {
+
+  # return NA if either the day or the month is missing
+  test <- c("12", "apr", "12 cat", "cat apr")
+  expect_equal(
+    object = parse_lazy_date(test),
+    expected = as.Date(rep(NA, length(test)))
+  )
+
+  # returns NA if the day or month are multiply matched
+  test <- c("12 12 apr", "12 apr 12", "12 apr apr", "12 apr may", "may 12 may", "12 12", "may jun")
+  expect_equal(
+    object = parse_lazy_date(test),
+    expected = as.Date(rep(NA, length(test)))
+  )
+
+  # BUT! will return dates if there are non-matched strings or no separators
+  # TODO: decide if this is desirable behaviour!
+  test <- c("tue 12 apr", "wed 12 apr", "cat apr 12", "apr12", "12apr","12apricot")
+  expect_equal(
+    object = parse_lazy_date(test, year_start = lubridate::ymd("2020 01 01")),
+    expected = rep(lubridate::ymd("2020 04 12"), length(test))
+  )
+
+})
