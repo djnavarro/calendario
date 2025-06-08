@@ -305,6 +305,7 @@ Add a task to a project
   description = NULL,
   start = NULL,
   stop = NULL,
+  days = NULL,
   daily_hours = NULL,
   total_hours = NULL,
   type = NULL,
@@ -321,6 +322,8 @@ Add a task to a project
 \item{\code{start}}{Date the work starts (defaults to current date)}
 
 \item{\code{stop}}{Date the work stops (defaults to same day as start)}
+
+\item{\code{days}}{Number of weekdays spanned by the task}
 
 \item{\code{daily_hours}}{Number of hours per day the task takes}
 

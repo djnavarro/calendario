@@ -99,6 +99,7 @@ Calendario <- R6::R6Class(
     #' @param description Character string providing a description of the task
     #' @param start Date the work starts (defaults to current date)
     #' @param stop Date the work stops (defaults to same day as start)
+    #' @param days Number of weekdays spanned by the task
     #' @param daily_hours Number of hours per day the task takes
     #' @param total_hours Number of hours in total the task takes
     #' @param type Character string assigning the task to a category
@@ -120,57 +121,44 @@ Calendario <- R6::R6Class(
     add_task = function(description = NULL,
                         start = NULL,
                         stop = NULL,
+                        days = NULL,
                         daily_hours = NULL,
                         total_hours = NULL,
                         type = NULL,
                         project = NULL,
                         team = NULL) {
 
-      # apply simple defaults
+      # simple defaults
       if (is.null(description)) description <- private$default$description
       if (is.null(type)) type <- private$default$type
       if (is.null(project)) project <- private$default$project
       if (is.null(team)) team <- private$default$team
+      if (is.null(daily_hours)) daily_hours <- private$default$daily_hours
 
-      # use helper functions to supply default task dates
+      # use helper functions to supply default task dates & days
       if (is.null(start)) start <- private$options$date_task_start()
-      if (is.null(stop)) stop <- private$options$date_task_stop(start)
+      if (is.null(stop)) stop <- private$options$date_task_stop(start, days)
       
-      # handle lazy date strings
+      # handle lazy date strings if the user has passed those
       if (!inherits(start, "Date")) start <- parse_lazy_date(start)
       if (!inherits(stop, "Date")) stop <- parse_lazy_date(stop)  
       
-      # compute the task date in terms of weekdays
-      days <- n_weekdays(start, stop)
-
-      # fill out daily and total hours
-      if (is.null(daily_hours) & is.null(total_hours)) {
-        daily_hours <- private$default$daily_hours
-        total_hours <- daily_hours * days
-      } 
-      if (is.null(daily_hours) & !is.null(total_hours)) {
-        daily_hours <- total_hours / days
-      }
-      if (!is.null(daily_hours) & is.null(total_hours)) {
-        total_hours <- daily_hours * days
-      }
-      if (!is.null(daily_hours) & !is.null(total_hours)) {
-        total_hours <- daily_hours * days       
-      }
+      # define task
+      task <- new_task(
+        project = project,
+        type = type,
+        description = description,
+        start = start,
+        stop = stop,
+        days = days,
+        daily_hours = daily_hours,
+        total_hours = total_hours,
+        team = team
+      )
 
       # store the task
-      private$tasks <- private$tasks |>
-        tibble::add_row(
-          project = project,
-          type = type,
-          description = description,
-          start = start,
-          stop = stop,
-          days = days,
-          daily_hours = daily_hours,
-          total_hours = total_hours,
-          team = team
-        )
+      private$tasks <- dplyr::bind_rows(private$tasks, task) 
+      
     }, 
 
     #' @description
@@ -361,28 +349,23 @@ Calendario <- R6::R6Class(
 
   private = list(
 
-    tasks = tibble::tibble(
-      project = character(),
-      type = character(),
-      description = character(),
-      start = as.Date(character(0L)),
-      stop = as.Date(character(0L)),
-      days = numeric(),
-      daily_hours = numeric(),
-      total_hours = numeric(),
-      team = character()
-    ),
+    tasks = new_task()[-1,],
     
-    default = tibble::tibble(
+    # task defaults are either a value or a function
+    default = list(
       project = "Project",
       type = NA_character_,
       description = "Description",
-      start = as.Date(NA),
-      stop = as.Date(NA),
       days = NA_real_,
       daily_hours = 1,
       total_hours = 1,
-      team = NA_character_
+      team = NA_character_,
+      start = function() lubridate::today(),
+      stop = function(start = NULL, days = NULL) {
+        if (is.null(start)) start <- lubridate::today()
+        if (is.null(days)) days <- 0
+        add_weekdays(start, days)
+      }
     ),
 
     options = list(
@@ -396,13 +379,7 @@ Calendario <- R6::R6Class(
       date_range_stop = function(start = NULL, span = 90) {
         if(is.null(start)) return(lubridate::today() + span)
         start
-      },
-      date_task_start = function() lubridate::today(),
-      date_task_stop = function(start = NULL) {
-        if(is.null(start)) return(lubridate::today())
-        start
       }
-
     )
 
 

@@ -74,10 +74,33 @@ date_vec <- function(start, stop, parse_date = NULL) {
   as.Date(start:stop)
 }
 
+# check if x is a weekday
+is_weekday <- function(x) {
+  d <-  lubridate::wday(x, label = TRUE)
+  !(d %in% c("Sat", "Sun"))
+}
+
 # count the number of weekdays TODO: this is inefficient
 n_weekdays <- function(start, stop) {
-  days <- lubridate::wday(date_vec(start, stop), label = TRUE)
-  sum(!(days %in% c("Sat", "Sun")))
+  days <- date_vec(start, stop)
+  sum(is_weekday(days))
+}
+
+# add the weekdays TODO: this is awful
+add_weekdays <- function(x, n) {
+  if (n == 0) return(x)
+  if (n > 0) {
+    while (n > 0) {
+      x <- x + 1
+      if (is_weekday(x)) n <- n - 1
+    }
+    return(x)
+  }
+  while (n < 0) {
+    x <- x - 1
+    if (is_weekday(x)) n <- n + 1
+  }
+  return(x)
 }
 
 #friday <- function() {
