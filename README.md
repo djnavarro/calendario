@@ -75,7 +75,7 @@ Viewing tasks, projects, and monthly calendars:
 cal$get_tasks()
 #> # A tibble: 5 × 9
 #>   project   type  description                  start      stop        days daily_hours total_hours team    
-#>   <chr>     <chr> <chr>                        <date>     <date>     <dbl>       <dbl>       <dbl> <chr>   
+#>   <chr>     <chr> <chr>                        <date>     <date>     <int>       <dbl>       <dbl> <chr>   
 #> 1 Housework <NA>  Miscellaneous domestic tasks 2025-07-11 2025-07-14     2           4           8 Danielle
 #> 2 Art       <NA>  Finish writing the system    2025-07-14 2025-07-14     1           4           4 <NA>    
 #> 3 Art       <NA>  Publish the code             2025-07-14 2025-07-16     3           1           3 <NA>    

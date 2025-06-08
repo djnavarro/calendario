@@ -128,14 +128,18 @@ Calendario <- R6::R6Class(
                         project = NULL,
                         team = NULL) {
 
-      # simple defaults
+      # simple defaults are static
       if (is.null(description)) description <- private$default$description
       if (is.null(type)) type <- private$default$type
       if (is.null(project)) project <- private$default$project
       if (is.null(team)) team <- private$default$team
-      if (is.null(daily_hours)) daily_hours <- private$default$daily_hours
 
-      # use helper functions to supply default task dates & days
+      # for hours, only rely on defaults if both fields are missing
+      if (is.null(daily_hours) & is.null(total_hours)) {
+        daily_hours <- private$default$daily_hours
+      }
+
+      # filling out dates requires calling the helper functions
       if (is.null(start)) start <- private$options$date_task_start()
       if (is.null(stop)) stop <- private$options$date_task_stop(start, days)
       
@@ -349,9 +353,10 @@ Calendario <- R6::R6Class(
 
   private = list(
 
-    tasks = new_task()[-1,],
+    tasks = empty_task(),
     
-    # task defaults are either a value or a function
+    # default values for (some) task fields
+    # TODO: should this be merged into options somehow??
     default = list(
       project = "Project",
       type = NA_character_,
@@ -359,27 +364,34 @@ Calendario <- R6::R6Class(
       days = NA_real_,
       daily_hours = 1,
       total_hours = 1,
-      team = NA_character_,
-      start = function() lubridate::today(),
-      stop = function(start = NULL, days = NULL) {
-        if (is.null(start)) start <- lubridate::today()
-        if (is.null(days)) days <- 0
-        add_weekdays(start, days)
-      }
+      team = NA_character_
     ),
 
     options = list(
+
+      # list of arguments to be passed to flextable::set_flextable_defaults()
       flextable_options = list(
         theme_fun = flextable::theme_alafoli,
         font.size = 8,
         fmt_date = "%a %b %d %Y",
         background.color = "#ffffff"
       ),
+
+      # functions supplying defaults for date ranges
       date_range_start = function() lubridate::today(),
       date_range_stop = function(start = NULL, span = 90) {
         if(is.null(start)) return(lubridate::today() + span)
         start
+      },
+
+      # functions supplying defaults for task dates
+      date_task_start = function() lubridate::today(),
+      date_task_stop = function(start = NULL, days = NULL) {
+        if (is.null(start)) start <- lubridate::today()
+        if (is.null(days)) days <- 0
+        add_weekdays(start, days)
       }
+
     )
 
 

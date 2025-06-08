@@ -107,6 +107,7 @@ new_task <- function(project = NULL,
   return(task)                  
 }
 
+empty_task <- function() new_task()[-1,]
 
 #print.cal_task <- function(x, ...) {
 #  if (nrow(x) == 0) {
