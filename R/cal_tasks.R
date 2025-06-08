@@ -86,8 +86,8 @@ new_task <- function(project = NULL,
   }
 
   # if only one is supplied, populate using the other and "days"
-  if (is.na(daily_hours)) daily_hours <- total_hours / days
-  if (is.na(total_hours)) total_hours <- daily_hours * days
+  if (is.na(daily_hours)) daily_hours <- total_hours / max(days, 1)
+  if (is.na(total_hours)) total_hours <- daily_hours * max(days, 1)
 
   # place into a tibble
   task <- tibble::tibble(
