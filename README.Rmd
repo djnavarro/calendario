@@ -5,6 +5,7 @@ output: github_document
 <!-- README.md is generated from README.Rmd. Please edit that file -->
 
 ```{r, include = FALSE}
+#| label: setup
 knitr::opts_chunk$set(
   collapse = TRUE,
   comment = "#>",
@@ -36,6 +37,7 @@ pak::pak("djnavarro/calendario")
 Creating a calendar and adding tasks to projects:
 
 ```{r}
+#| label: create-tasks
 library(calendario)
 
 # initialise an empty calendar
@@ -56,7 +58,7 @@ cal
 # this is a more convenient way
 cal$set_project("Art")
 cal$add_task("Finish writing the system", "14 jul", total_hours = 4)
-cal$add_task("Publish the code", "14 jul", "16 jul", total_hours = 3)
+cal$add_task("Publish the code", "14 jul", "16 jul", total_hours = 5)
 cal
 
 # piping is also supported
@@ -67,18 +69,34 @@ cal |>
 cal 
 ```
 
-Viewing tasks, projects, and monthly calendars:
+Viewing tasks, projects, and monthly calendars at the R console:
 
 ```{r}
-# extracting tasks returns a tibble
+#| label: get-information
+# one row per task, all details shown
 cal$get_tasks()
 
-# showing tasks returns a flextable
-cal$show_tasks()
-
-# extracting a calendar returns a list of tibbles
+# one tibble per month, counts daily hours
 cal$get_calendar("1 jun", "11 aug")
+```
 
-# showing a calendar returns a flextable
+Creating HTML tables to display the tasks:
+
+```{r}
+#| label: show-tasks
+cal$show_tasks()
+```
+
+Tasks can be filtered:
+
+```{r}
+#| label: filter-tasks
+cal$show_tasks(project == "Art")
+```
+
+Calendars can also be displayed as HTML tables:
+
+```{r}
+#| label: show-calendar
 cal$show_calendar("1 jun", "11 aug")
 ```
