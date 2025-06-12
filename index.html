@@ -22,7 +22,7 @@
 
     <a class="navbar-brand me-2" href="index.html">calendario</a>
 
-    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9023</small>
+    <small class="nav-text text-muted me-auto" data-bs-toggle="tooltip" data-bs-placement="bottom" title="">0.0.0.9024</small>
 
 
     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbar" aria-controls="navbar" aria-expanded="false" aria-label="Toggle navigation">
@@ -107,13 +107,14 @@
 <code class="sourceCode R"><span><span class="co"># one row per task, all details shown</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">get_tasks</span><span class="op">(</span><span class="op">)</span></span>
 <span><span class="co">#&gt; # A tibble: 5 × 9</span></span>
-<span><span class="co">#&gt;   project   type  description                  start      stop        days daily_hours total_hours team    </span></span>
-<span><span class="co">#&gt;   &lt;chr&gt;     &lt;chr&gt; &lt;chr&gt;                        &lt;date&gt;     &lt;date&gt;     &lt;int&gt;       &lt;dbl&gt;       &lt;dbl&gt; &lt;chr&gt;   </span></span>
-<span><span class="co">#&gt; 1 Housework &lt;NA&gt;  Miscellaneous domestic tasks 2025-07-11 2025-07-14     2        4              8 Danielle</span></span>
-<span><span class="co">#&gt; 2 Art       &lt;NA&gt;  Finish writing the system    2025-07-14 2025-07-14     1        4              4 &lt;NA&gt;    </span></span>
-<span><span class="co">#&gt; 3 Art       &lt;NA&gt;  Publish the code             2025-07-14 2025-07-16     3        1.67           5 &lt;NA&gt;    </span></span>
-<span><span class="co">#&gt; 4 Writing   &lt;NA&gt;  First blog post              2025-07-02 2025-07-02     1        1              1 &lt;NA&gt;    </span></span>
-<span><span class="co">#&gt; 5 Writing   &lt;NA&gt;  Second blog post             2025-07-13 2025-07-13     0        1              1 &lt;NA&gt;</span></span>
+<span><span class="co">#&gt;   project type  description start      stop        days daily_hours total_hours</span></span>
+<span><span class="co">#&gt;   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt;       &lt;date&gt;     &lt;date&gt;     &lt;int&gt;       &lt;dbl&gt;       &lt;dbl&gt;</span></span>
+<span><span class="co">#&gt; 1 Housew… &lt;NA&gt;  Miscellane… 2025-07-11 2025-07-14     2        4              8</span></span>
+<span><span class="co">#&gt; 2 Art     &lt;NA&gt;  Finish wri… 2025-07-14 2025-07-14     1        4              4</span></span>
+<span><span class="co">#&gt; 3 Art     &lt;NA&gt;  Publish th… 2025-07-14 2025-07-16     3        1.67           5</span></span>
+<span><span class="co">#&gt; 4 Writing &lt;NA&gt;  First blog… 2025-07-02 2025-07-02     1        1              1</span></span>
+<span><span class="co">#&gt; 5 Writing &lt;NA&gt;  Second blo… 2025-07-13 2025-07-13     0        1              1</span></span>
+<span><span class="co">#&gt; # ℹ 1 more variable: team &lt;chr&gt;</span></span>
 <span></span>
 <span><span class="co"># one tibble per month, counts daily hours</span></span>
 <span><span class="va">cal</span><span class="op">$</span><span class="fu">get_calendar</span><span class="op">(</span><span class="st">"1 jun"</span>, <span class="st">"11 aug"</span><span class="op">)</span></span>
