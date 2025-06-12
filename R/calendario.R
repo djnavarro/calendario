@@ -261,7 +261,8 @@ Calendario <- R6::R6Class(
           monthday = lubridate::mday(date),
           week     = cumsum(weekday == "Mon")
         ) |>
-        dplyr::filter(!(weekday %in% c("Sat", "Sun"))) # TODO: support weekends eventually?
+        dplyr::filter(!(weekday %in% c("Sat", "Sun"))) |> # TODO: support weekends eventually?
+        dplyr::mutate(weekday = factor(weekday, levels = c("Mon", "Tue", "Wed", "Thu", "Fri")))
     },
 
     #' @description
@@ -294,7 +295,8 @@ Calendario <- R6::R6Class(
       }
 
       work_month <- function(data) {
-        data |>
+
+        wm <- data |>
           dplyr::group_by(week) |>
           dplyr::mutate(
             dayspan = span_str(monthday),
@@ -302,13 +304,27 @@ Calendario <- R6::R6Class(
           ) |>
           dplyr::ungroup() |>
           dplyr::select(weekday, month, daily_hours, dayspan, weektotal) |>
-          tidyr::pivot_wider(names_from = weekday, values_from = daily_hours) |> 
+          tidyr::pivot_wider(
+            names_from = weekday, 
+            values_from = daily_hours
+          ) 
+        
+        # hack
+        if (!exists("Mon", wm)) wm$Mon <- NA_real_
+        if (!exists("Tue", wm)) wm$Tue <- NA_real_
+        if (!exists("Wed", wm)) wm$Wed <- NA_real_
+        if (!exists("Thu", wm)) wm$Thu <- NA_real_
+        if (!exists("Fri", wm)) wm$Fri <- NA_real_
+              
+        wm <- wm |> 
           dplyr::select(
             Month = month, 
             Days = dayspan, 
             Mon, Tue, Wed, Thu, Fri, 
             Total = weektotal
           )
+
+        return(wm)
       }
 
       mcal <- work |> 
@@ -387,7 +403,7 @@ Calendario <- R6::R6Class(
       date_range_start = function() lubridate::today(),
       date_range_stop = function(start = NULL, span = 90) {
         if(is.null(start)) return(lubridate::today() + span)
-        start
+        start + span
       },
 
       # functions supplying defaults for task dates

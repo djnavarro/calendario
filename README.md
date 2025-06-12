@@ -74,13 +74,14 @@ Viewing tasks, projects, and monthly calendars at the R console:
 # one row per task, all details shown
 cal$get_tasks()
 #> # A tibble: 5 × 9
-#>   project   type  description                  start      stop        days daily_hours total_hours team    
-#>   <chr>     <chr> <chr>                        <date>     <date>     <int>       <dbl>       <dbl> <chr>   
-#> 1 Housework <NA>  Miscellaneous domestic tasks 2025-07-11 2025-07-14     2        4              8 Danielle
-#> 2 Art       <NA>  Finish writing the system    2025-07-14 2025-07-14     1        4              4 <NA>    
-#> 3 Art       <NA>  Publish the code             2025-07-14 2025-07-16     3        1.67           5 <NA>    
-#> 4 Writing   <NA>  First blog post              2025-07-02 2025-07-02     1        1              1 <NA>    
-#> 5 Writing   <NA>  Second blog post             2025-07-13 2025-07-13     0        1              1 <NA>
+#>   project type  description start      stop        days daily_hours total_hours
+#>   <chr>   <chr> <chr>       <date>     <date>     <int>       <dbl>       <dbl>
+#> 1 Housew… <NA>  Miscellane… 2025-07-11 2025-07-14     2        4              8
+#> 2 Art     <NA>  Finish wri… 2025-07-14 2025-07-14     1        4              4
+#> 3 Art     <NA>  Publish th… 2025-07-14 2025-07-16     3        1.67           5
+#> 4 Writing <NA>  First blog… 2025-07-02 2025-07-02     1        1              1
+#> 5 Writing <NA>  Second blo… 2025-07-13 2025-07-13     0        1              1
+#> # ℹ 1 more variable: team <chr>
 
 # one tibble per month, counts daily hours
 cal$get_calendar("1 jun", "11 aug")
